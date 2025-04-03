@@ -1,4 +1,4 @@
-package org.xtracat.client;
+package org.xtracat.client.irrelevant;
 
 
 import org.xtracat.client.commands.*;
@@ -93,10 +93,3 @@ public class Main {
         }
     }
 }
-
-
-//
-
-
-//6) filter_greater_than_label не работает (non representative)
-//7) Починить add в скрипте, убрать промпты для ввода

@@ -1,37 +1,37 @@
 <BandsCollection>
     <initializationDate>2025-03-26T15:09:26Z</initializationDate>
-    <currentId>20</currentId>
+    <currentId>23</currentId>
     <musicBands>
         <musicBand>
-            <id>4</id>
-            <name>2</name>
+            <id>22</id>
+            <name>exampple</name>
             <coordinates>
-                <x>2</x>
-                <y>2</y>
+                <x>32</x>
+                <y>4</y>
             </coordinates>
-            <creationDate>2025-03-27T13:22:52Z</creationDate>
-            <numberOfParticipants>2</numberOfParticipants>
-            <singlesCount>2</singlesCount>
-            <genre>POP</genre>
+            <creationDate>2025-03-29T08:38:10Z</creationDate>
+            <numberOfParticipants>3</numberOfParticipants>
+            <singlesCount>12</singlesCount>
+            <genre>RAP</genre>
             <label>
-                <bands>2</bands>
-                <sales>2.0</sales>
+                <bands>5</bands>
+                <sales>5.0</sales>
             </label>
         </musicBand>
         <musicBand>
-            <id>20</id>
+            <id>23</id>
             <name>1</name>
             <coordinates>
                 <x>1</x>
                 <y>1</y>
             </coordinates>
-            <creationDate>2025-03-28T22:14:08+03:00</creationDate>
+            <creationDate>2025-03-30T19:13:57+03:00</creationDate>
             <numberOfParticipants>1</numberOfParticipants>
-            <singlesCount>1</singlesCount>
-            <genre>RAP</genre>
+            <singlesCount>11</singlesCount>
+            <genre>POP</genre>
             <label>
-                <bands>1</bands>
-                <sales>1.0</sales>
+                <bands>4</bands>
+                <sales>433.0</sales>
             </label>
         </musicBand>
     </musicBands>
