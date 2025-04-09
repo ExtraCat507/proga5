@@ -6,7 +6,7 @@ import org.xtracat.connection.util.ClientData;
 import java.io.IOException;
 import java.net.*;
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
+
 import java.nio.channels.*;
 import java.util.Set;
 
@@ -18,8 +18,6 @@ public class Main {
         System.out.println("Server side running");
         InetAddress host;
         int port = 6789;
-        SocketAddress addr;
-        SocketChannel sock;
 
         try {
             Selector selector = Selector.open();
@@ -38,18 +36,11 @@ public class Main {
                             doAccept(key);
                         }
 
-
                         if (key.isReadable()) {
                             doRead(key);
-
                             // ОБРАБОТКА
-//                            System.out.println("обрабатываем");
                             processData((ClientData) key.attachment());
-//                            System.out.println("обработали");
-
-
                         }
-
 
                         if (key.isWritable()) {
                             doWrite(key);
@@ -65,28 +56,6 @@ public class Main {
             System.out.println("Гена все хуйня в целом");
             e.printStackTrace();
         }
-
-
-//        try (ServerSocketChannel serv = ServerSocketChannel.open()){
-//            serv.configureBlocking(false);
-//            host = InetAddress.getLocalHost();
-//            addr = new InetSocketAddress(host, port);
-//            serv.bind(addr);
-//            sock = serv.accept(); //!!!!!
-//            sock.configureBlocking(false);
-//            ByteBuffer buf = ByteBuffer.wrap(arr);
-//            sock.read(buf);
-//
-//            for (int j = 0; j < len; j++) {
-//                arr[j] *= 2;
-//            }
-//
-//            buf.flip();
-//            sock.write(buf);
-//
-//        } catch (IOException e) {
-//            System.out.println("Гена все хуйня");
-//        }
 
     }
 
@@ -138,10 +107,10 @@ public class Main {
         byte[] numbers = new byte[buffer.remaining()];
         ByteBuffer nbuffer = ByteBuffer.wrap(numbers);
 
-        for(int i = buffer.position(); i<buffer.remaining();i++){
+        for (int i = buffer.position(); i < buffer.remaining(); i++) {
             byte kk = buffer.get(i);
             System.out.println(kk);
-            numbers[i]= (byte) (kk*2);
+            numbers[i] = (byte) (kk * 2);
         }
 
 
@@ -151,26 +120,4 @@ public class Main {
 
         return buffer;
     }
-
-    // ЧИСТО ОТ НЕЙРОНКИ
-//    private static void processData(ByteBuffer buffer) {
-//        buffer.flip();  // Переключаем в режим чтения
-//        IntBuffer intBuffer = buffer.asIntBuffer();  // Интерпретируем буфер как массив int
-//
-//        int[] numbers = new int[intBuffer.remaining()];
-//        intBuffer.get(numbers);  // Читаем все числа
-//
-//        // Увеличиваем каждое число в 2 раза
-//        for (int i = 0; i < numbers.length; i++) {
-//            numbers[i] *= 2;
-//        }
-//
-//        buffer.clear();  // Переключаем обратно в режим записи
-//        buffer.asIntBuffer().put(numbers);  // Записываем числа обратно в буфер
-//    }
-
-
-
-
-
 }

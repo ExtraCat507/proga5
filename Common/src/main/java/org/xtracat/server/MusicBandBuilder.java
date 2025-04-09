@@ -1,0 +1,23 @@
+package org.xtracat.server;
+
+import org.xtracat.datatypes.Coordinates;
+import org.xtracat.datatypes.Label;
+import org.xtracat.datatypes.MusicBand;
+import org.xtracat.datatypes.MusicGenre;
+
+import java.time.ZonedDateTime;
+
+public class MusicBandBuilder {
+    CollectionManager cm;
+
+    public MusicBandBuilder(CollectionManager cm) {
+        this.cm = cm;
+    }
+
+    public MusicBand build(String name, Coordinates coordinates, ZonedDateTime creationDate,
+                           Long numberOfParticipants, Integer singlesCount, MusicGenre genre, Label label) {
+        MusicBand band = new MusicBand(cm.getNewId(),name, coordinates, ZonedDateTime.now(), numberOfParticipants, singlesCount, genre, label);
+        band.validate();
+        return band;
+    }
+}
