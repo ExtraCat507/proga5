@@ -1,26 +1,46 @@
 package org.xtracat.client.commands;
 
-import org.xtracat.server.CollectionManager;
+import org.xtracat.client.util.Dispatcher;
+import org.xtracat.client.util.Request;
+import org.xtracat.client.util.Response;
 
 public class RemoveLastCommand implements Command {
-    CollectionManager cm;
 
-    public RemoveLastCommand() {
+    private final Dispatcher dispatcher;
 
+    public RemoveLastCommand(Dispatcher dispatcher) {
+        this.dispatcher = dispatcher;
     }
 
     @Override
-    public void execute(int mode, String[] args) {
-        int callback = cm.removeLast();
-        if (callback == 0) {
-            System.out.println("Удаление успешно");
-        } else if (callback == -1) {
-            System.out.println("Коллекция уже пуста");
+    public void prepare() {
+        // Дополнительная подготовка не требуется.
+    }
+
+    @Override
+    public Request buildRequest() {
+        return new Request("remove_last", null);
+    }
+
+    @Override
+    public void processResponse(Response response) {
+        if (response != null) {
+            System.out.println(response.getMessage());
+        } else {
+            System.out.println("Нет ответа от сервера.");
         }
     }
 
     @Override
+    public void execute(int mode, String[] args) {
+        prepare();
+        Request request = buildRequest();
+        Response response = dispatcher.send(request);
+        processResponse(response);
+    }
+
+    @Override
     public String descr() {
-        return "remove_last - удалить последний эл-т";
+        return "remove_last - удалить последний элемент";
     }
 }

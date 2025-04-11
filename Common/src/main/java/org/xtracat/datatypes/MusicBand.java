@@ -3,8 +3,6 @@ package org.xtracat.datatypes;
 import java.time.ZonedDateTime;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.fasterxml.jackson.datatype.jsr310.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true) // Пропускает невалидные объекты
 //@JacksonXmlRootElement(localName = "musicBand")
@@ -21,7 +19,6 @@ public class MusicBand implements Comparable {
 
 
     public MusicBand(
-            @JsonProperty("id") Long id,
             @JsonProperty("name") String name,
             @JsonProperty("coordinates") Coordinates coordinates,
             @JsonProperty("creationDate") @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX") ZonedDateTime creationDate,

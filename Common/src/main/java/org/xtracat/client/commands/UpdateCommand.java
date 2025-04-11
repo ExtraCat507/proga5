@@ -1,43 +1,77 @@
 package org.xtracat.client.commands;
 
 import org.xtracat.client.util.AdvancedScanner;
-import org.xtracat.server.CollectionManager;
+import org.xtracat.client.util.Dispatcher;
+import org.xtracat.client.util.Request;
+import org.xtracat.client.util.Response;
+import org.xtracat.datatypes.MusicBand;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class UpdateCommand implements Command {
-    CollectionManager cm;
-    AdvancedScanner advSc;
-    List<Scanner> scannerStack;
 
-    public UpdateCommand(List<Scanner> scannerStack) {
+    private final Dispatcher dispatcher;
+    private final List<Scanner> scannerStack;
+    private long id;
+    private MusicBand musicBand;
+    private int mode; // режим, передаваемый в execute
+
+    public UpdateCommand(Dispatcher dispatcher, List<Scanner> scannerStack) {
+        this.dispatcher = dispatcher;
         this.scannerStack = scannerStack;
     }
 
-
     @Override
-    public void execute(int mode, String[] args) {
-        this.advSc = new AdvancedScanner(scannerStack.get(scannerStack.size() - 1));
-        try {
-            long id = Long.parseLong(args[0]);
-            if (cm.findById(id) == -1) {
-                System.out.println("Не существует id");
-                return;
-            }
-            int callback = cm.changeById(id, advSc.createMusicBand(cm));
-            if (callback == 0) {
-                System.out.println("Элемент успешно изменен");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Неправильный формат аргумента");
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Нет аргумента");
+    public void prepare() {
+        AdvancedScanner advSc = new AdvancedScanner(scannerStack.get(scannerStack.size() - 1));
+        // Выбор метода ввода в зависимости от режима
+        if (mode == 1) {
+            musicBand = advSc.createMusicBandInScript();
+        } else {
+            musicBand = advSc.createMusicBand();
         }
     }
 
     @Override
+    public Request buildRequest() {
+        // Формируем payload как массив: первый элемент - id, второй - объект MusicBand
+        Object[] payload = new Object[]{id, musicBand};
+        return new Request("update", payload);
+    }
+
+    @Override
+    public void processResponse(Response response) {
+        if (response != null) {
+            System.out.println(response.getMessage());
+        } else {
+            System.out.println("Нет ответа от сервера.");
+        }
+    }
+
+    @Override
+    public void execute(int mode, String[] args) {
+        this.mode = mode;
+        try {
+            id = Long.parseLong(args[0]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Нет аргумента");
+            return;
+        } catch (NumberFormatException e) {
+            System.out.println("Неправильный формат аргумента");
+            return;
+        }
+        prepare();
+        if (musicBand == null) {
+            return;
+        }
+        Request request = buildRequest();
+        Response response = dispatcher.send(request);
+        processResponse(response);
+    }
+
+    @Override
     public String descr() {
-        return "";
+        return "update id - обновить элемент коллекции по id";
     }
 }

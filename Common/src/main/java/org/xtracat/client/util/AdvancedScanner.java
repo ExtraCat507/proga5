@@ -108,7 +108,7 @@ public class AdvancedScanner {
     /**
      * Взаимодействует с пользователем и создает объект MusicBand
      */
-    public MusicBand createMusicBand(CollectionManager cm) {
+    public MusicBand createMusicBand() {
         System.out.println("Введите название музыкальной группы:");
         String name;
         while (true) {
@@ -122,19 +122,19 @@ public class AdvancedScanner {
         Integer singlesCount = enterInteger("Введите количество синглов:", 1);
         MusicGenre genre = enterMusicGenre();
         Label label = enterLabel();
-        MusicBandBuilder builder = new MusicBandBuilder(cm);
+        MusicBandBuilder builder = new MusicBandBuilder();
         return builder.build(name, coordinates, ZonedDateTime.now(), numberOfParticipants, singlesCount, genre, label);
     }
 
-    public MusicBand createMusicBandInScript(CollectionManager cm) {
+    public MusicBand createMusicBandInScript() {
         try {
             String name = sc.nextLine();
-            Coordinates coordinates = enterCoordinatesInScript(cm);
+            Coordinates coordinates = enterCoordinatesInScript();
             Long numberOfParticipants = sc.nextLong();
             Integer singlesCount = sc.nextInt();
-            MusicGenre genre = enterMusicGenreInScript(cm);
-            Label label = enterLabelInScript(cm);
-            MusicBandBuilder builder = new MusicBandBuilder(cm);
+            MusicGenre genre = enterMusicGenreInScript();
+            Label label = enterLabelInScript();
+            MusicBandBuilder builder = new MusicBandBuilder();
             return builder.build(name, coordinates, ZonedDateTime.now(), numberOfParticipants, singlesCount, genre, label);
         } catch (IllegalArgumentException e) {
             System.out.println("Неверные данные при вводе MusicBand(или одного из полей)");
@@ -144,7 +144,7 @@ public class AdvancedScanner {
 
     }
 
-    private MusicGenre enterMusicGenreInScript(CollectionManager cm) {
+    private MusicGenre enterMusicGenreInScript() {
         try {
             String input = sc.next();
             if (input.isEmpty()) return null;
@@ -159,11 +159,11 @@ public class AdvancedScanner {
 
     }
 
-    public Label enterLabelInScript(CollectionManager cm) {
+    public Label enterLabelInScript() {
         try {
             long bands = sc.nextLong();
             double sales = sc.nextDouble();
-            LabelBuilder builder = new LabelBuilder(cm);
+            LabelBuilder builder = new LabelBuilder();
             return builder.build(bands, sales);
         } catch (IllegalArgumentException e) {
             System.out.println("Неверные данные при вводе Label");
@@ -172,10 +172,10 @@ public class AdvancedScanner {
 
     }
 
-    private Coordinates enterCoordinatesInScript(CollectionManager cm) {
+    private Coordinates enterCoordinatesInScript() {
         long x = sc.nextLong();
         int y = sc.nextInt();
-        CoordinatesBuilder builder = new CoordinatesBuilder(cm);
+        CoordinatesBuilder builder = new CoordinatesBuilder();
 
         return builder.build(x, y);
 

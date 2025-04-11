@@ -1,26 +1,59 @@
 package org.xtracat.client.commands;
 
+import org.xtracat.client.util.Dispatcher;
+import org.xtracat.client.util.Request;
+import org.xtracat.client.util.Response;
 import org.xtracat.datatypes.MusicBand;
-import org.xtracat.server.CollectionManager;
 
-import java.util.LinkedList;
+import java.util.List;
 
 public class ShowCommand implements Command {
-    CollectionManager cm;
 
-    public ShowCommand() {
+    private final Dispatcher dispatcher;
 
+    public ShowCommand(Dispatcher dispatcher) {
+        this.dispatcher = dispatcher;
+    }
+
+    @Override
+    public void prepare() {
+        // Нет дополнительной подготовки
+    }
+
+    @Override
+    public Request buildRequest() {
+        return new Request("show", null);
+    }
+
+    @Override
+    public void processResponse(Response response) {
+        if (response == null) {
+            System.out.println("Нет ответа от сервера.");
+            return;
+        }
+        Object data = response.getData();
+        if (data instanceof List) {
+            List<MusicBand> bandList = (List<MusicBand>) data;
+            if (bandList.isEmpty()) {
+                System.out.println("Коллекция пуста.");
+            } else {
+                System.out.println("****************************");
+                for (MusicBand band : bandList) {
+                    System.out.println(band);
+                }
+                System.out.println("****************************");
+            }
+        } else {
+            System.out.println(response.getMessage());
+        }
     }
 
     @Override
     public void execute(int mode, String[] args) {
-        System.out.println("****************************");
-        System.out.println("\n________________\n");
-        LinkedList<MusicBand> bandLinkedList = cm.getList();
-        for (MusicBand band : bandLinkedList) {
-            System.out.println(band.toString());
-        }
-        System.out.println("****************************");
+        prepare();
+        Request request = buildRequest();
+        Response response = dispatcher.send(request);
+        processResponse(response);
     }
 
     @Override

@@ -1,9 +1,12 @@
 package org.xtracat;
 
 
+import org.xtracat.client.util.Request;
 import org.xtracat.connection.util.ClientData;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.*;
 import java.nio.ByteBuffer;
 
@@ -101,23 +104,51 @@ public class Main {
         }
     }
 
-    private static ByteBuffer processData(ClientData data) {
-        ByteBuffer buffer = data.buffer;
+    private static Request processData(ClientData userData) {
+        ByteBuffer buffer = userData.buffer;
         buffer.flip();
-        byte[] numbers = new byte[buffer.remaining()];
-        ByteBuffer nbuffer = ByteBuffer.wrap(numbers);
+        byte[] data = new byte[buffer.remaining()];
+        System.out.println(data.length);
+        // Читаем данные из буфера
+        buffer.get(data);
 
-        for (int i = buffer.position(); i < buffer.remaining(); i++) {
-            byte kk = buffer.get(i);
-            System.out.println(kk);
-            numbers[i] = (byte) (kk * 2);
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(data);
+             ObjectInputStream ois = new ObjectInputStream(bais)) {
+
+            Object obj = ois.readObject();
+            if (obj instanceof Request) {
+                Request request = (Request) obj;
+                // Отображаем запрос - можно переопределить метод toString() в Request для удобного вывода
+                System.out.println("Получен запрос: " + request);
+                return request;
+            } else {
+                System.err.println("Ошибка: десериализованный объект не является Request");
+                return null;
+            }
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Ошибка при десериализации запроса:");
+            e.printStackTrace();
+            return null;
         }
-
-
-        buffer.clear();  // Переключаем обратно в режим записи
-        buffer.put(nbuffer);  // Записываем числа обратно в буфер
-
-
-        return buffer;
     }
 }
+
+
+
+
+
+
+//        buffer.flip();
+//        byte[] numbers = new byte[buffer.remaining()];
+//        ByteBuffer nbuffer = ByteBuffer.wrap(numbers);
+//
+//        for (int i = buffer.position(); i < buffer.remaining(); i++) {
+//            byte kk = buffer.get(i);
+//            System.out.println(kk);
+//            numbers[i] = (byte) (kk * 2);
+//        }
+//
+//
+//        buffer.clear();  // Переключаем обратно в режим записи
+//        buffer.put(nbuffer);  // Записываем числа обратно в буфер

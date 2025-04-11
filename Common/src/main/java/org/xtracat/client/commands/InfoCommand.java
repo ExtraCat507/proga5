@@ -1,21 +1,46 @@
 package org.xtracat.client.commands;
 
-import org.xtracat.server.CollectionManager;
+import org.xtracat.client.util.Dispatcher;
+import org.xtracat.client.util.Request;
+import org.xtracat.client.util.Response;
 
 public class InfoCommand implements Command {
-    CollectionManager cm;
 
-    public InfoCommand() {
+    private final Dispatcher dispatcher;
 
+    public InfoCommand(Dispatcher dispatcher) {
+        this.dispatcher = dispatcher;
+    }
+
+    @Override
+    public void prepare() {
+        // Для команды info не требуется сбор дополнительных данных.
+    }
+
+    @Override
+    public Request buildRequest() {
+        return new Request("info", null);
+    }
+
+    @Override
+    public void processResponse(Response response) {
+        if (response != null) {
+            System.out.println(response.getMessage());
+        } else {
+            System.out.println("Нет ответа от сервера.");
+        }
     }
 
     @Override
     public void execute(int mode, String[] args) {
-        System.out.println(cm.getBandsCollection().toString());
+        prepare();
+        Request request = buildRequest();
+        Response response = dispatcher.send(request);
+        processResponse(response);
     }
 
     @Override
     public String descr() {
-        return "info - вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов)\n";
+        return "info - вывести информацию о коллекции (тип, дата инициализации, количество элементов)";
     }
 }

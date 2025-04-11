@@ -3,10 +3,8 @@ package org.xtracat.server;
 import org.xtracat.datatypes.Coordinates;
 
 public class CoordinatesBuilder {
-    CollectionManager cm;
 
-    public CoordinatesBuilder(CollectionManager cm) {
-        this.cm = cm;
+    public CoordinatesBuilder() {
     }
 
     public Coordinates build(long x, int y) {

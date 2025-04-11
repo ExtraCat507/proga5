@@ -1,5 +1,9 @@
 package org.xtracat.client.commands;
 
+import org.xtracat.client.util.Dispatcher;
+import org.xtracat.client.util.Request;
+import org.xtracat.client.util.Response;
+
 import java.io.*;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +15,7 @@ public class ExecuteScriptCommand implements Command {
     List<File> fileSet;
 
 
-    public ExecuteScriptCommand(Map<String, Command> commands, List<Scanner> scannerStack, List<File> fileSet) {
+    public ExecuteScriptCommand(Dispatcher dispatcher, Map<String, Command> commands, List<Scanner> scannerStack, List<File> fileSet) {
         this.commands = commands;
         this.scannerStack = scannerStack;
         this.fileSet = fileSet;
@@ -45,6 +49,21 @@ public class ExecuteScriptCommand implements Command {
             fileSet.clear();
             // System.out.println(scannerStack.size());
         }
+    }
+
+    @Override
+    public void prepare() {
+
+    }
+
+    @Override
+    public Request buildRequest() {
+        return null;
+    }
+
+    @Override
+    public void processResponse(Response response) {
+
     }
 
 

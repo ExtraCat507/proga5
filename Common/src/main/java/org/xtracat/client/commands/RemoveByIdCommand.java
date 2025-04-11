@@ -1,33 +1,54 @@
 package org.xtracat.client.commands;
 
-import org.xtracat.server.CollectionManager;
+import org.xtracat.client.util.Dispatcher;
+import org.xtracat.client.util.Request;
+import org.xtracat.client.util.Response;
 
 public class RemoveByIdCommand implements Command {
-    CollectionManager cm;
 
-    public RemoveByIdCommand() {
+    private final Dispatcher dispatcher;
+    private long id;
 
+    public RemoveByIdCommand(Dispatcher dispatcher) {
+        this.dispatcher = dispatcher;
+    }
+
+    @Override
+    public void prepare() {
+        // Ничего не нужно, всё происходит в execute
+    }
+
+    @Override
+    public Request buildRequest() {
+        return new Request("remove_by_id", id);
+    }
+
+    @Override
+    public void processResponse(Response response) {
+        if (response != null) {
+            System.out.println(response.getMessage());
+        } else {
+            System.out.println("Нет ответа от сервера.");
+        }
     }
 
     @Override
     public void execute(int mode, String[] args) {
         try {
-            long id = Long.parseLong(args[0]);
-            if (cm.findById(id) == -1) {
-                System.out.println("Не существует id");
-                return;
-            }
-            int callback = cm.removeById(id);
-            if (callback == 0) {
-                System.out.println("Элемент успешно удален");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Неправильный формат аргумента");
+            id = Long.parseLong(args[0]);
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Нет аргумента");
+            return;
+        } catch (NumberFormatException e) {
+            System.out.println("Неправильный формат аргумента");
+            return;
         }
-    }
 
+        prepare();
+        Request request = buildRequest();
+        Response response = dispatcher.send(request);
+        processResponse(response);
+    }
 
     @Override
     public String descr() {
