@@ -1,9 +1,6 @@
 package org.xtracat.client.commands;
 
-import org.xtracat.client.util.AdvancedScanner;
-import org.xtracat.client.util.Dispatcher;
-import org.xtracat.client.util.Request;
-import org.xtracat.client.util.Response;
+import org.xtracat.client.util.*;
 import org.xtracat.datatypes.MusicBand;
 
 import java.util.List;
@@ -13,11 +10,11 @@ import java.util.Scanner;
 public class AddCommand implements Command {
 
     private final List<Scanner> scannerStack;
-    private final Dispatcher dispatcher;
+    private final MyDispatcher dispatcher;
     private MusicBand musicBand;
     private int mode;
 
-    public AddCommand( Dispatcher dispatcher,List<Scanner> scannerStack) {
+    public AddCommand( MyDispatcher dispatcher,List<Scanner> scannerStack) {
         this.scannerStack = scannerStack;
         this.dispatcher = dispatcher;
     }

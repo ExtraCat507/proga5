@@ -1,6 +1,8 @@
 package org.xtracat.datatypes;
 
-public enum MusicGenre {
+import java.io.Serializable;
+
+public enum MusicGenre implements Serializable {
     PSYCHEDELIC_ROCK,
     RAP,
     POP,

@@ -1,10 +1,12 @@
 package org.xtracat;
 
 
+import org.xtracat.client.commands.ExitCommand;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 import org.xtracat.connection.util.ClientData;
 import org.xtracat.server.CollectionManager;
+import org.xtracat.server.ServerConsole;
 import org.xtracat.serverCommands.*;
 
 import java.io.*;
@@ -23,8 +25,10 @@ public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) {
 
-        System.out.println("Server side running");
-        logger.info("Сервер запущен");
+        //System.out.println("Server side running");
+        logger.info("Server side running");
+        InetAddress host;
+        int port = 6789;
 
         String filename;
         if (args.length != 0) {
@@ -34,6 +38,7 @@ public class Main {
             filename = "collection.xml";
         }
         CollectionManager cm = new CollectionManager(filename);
+
         Map<String, ServerCommand> commands = new HashMap<>();
         commands.put("add",new ServerAddCommand(cm));
         commands.put("clear",new ServerClearCommand(cm));
@@ -50,10 +55,6 @@ public class Main {
         commands.put("update", new ServerUpdateCommand(cm));
 
 
-
-        InetAddress host;
-        int port = 6789;
-
         try {
             Selector selector = Selector.open();
             ServerSocketChannel server = ServerSocketChannel.open();
@@ -61,10 +62,12 @@ public class Main {
             server.register(selector, OP_ACCEPT);
             server.bind(new InetSocketAddress(port));
             logger.info("Server started and listening on port {}", port);
+
             while (true) {
                 selector.select();
                 Set<SelectionKey> keys = selector.selectedKeys();
                 for (var iter = keys.iterator(); iter.hasNext(); ) {
+
                     SelectionKey key = iter.next();
                     iter.remove();
                     if (key.isValid()) {
@@ -73,6 +76,7 @@ public class Main {
                         }
 
                         if (key.isReadable()) {
+
                             doRead(key);
                             if(! key.isValid()){
                                 continue;
@@ -90,6 +94,7 @@ public class Main {
                             data.buffer.flip();
                             key.attach(data);
                             doWrite(key);
+                            data.buffer.clear();
                         }
 
                     }
@@ -98,13 +103,52 @@ public class Main {
             //selector.close();
         } catch (BindException e) {
             //System.out.println("Порт 6789 уже занят");
-            logger.error("Порт {} уже занят", port, e);
-        } catch (Exception e) {
+            logger.error("Port {} is busy", port, e);
+        }
+        catch (NoSuchElementException e){
+            ServerSaveCommand svc = new ServerSaveCommand(filename,cm);
+            svc.execute(new Request(null,null));
+            logger.info("Exiting");
+            System.exit(0);
+        }
+        catch (Exception e) {
             //System.out.println("Гена все не так");
-            logger.error("Гена все не так", e);
+            logger.error("Gena, vse poshlo po pizde", e);
         }
 
     }
+
+    private static void handleConsoleInput(ReadableByteChannel consoleChannel,String filename,CollectionManager cm) {
+        ByteBuffer buffer = ByteBuffer.allocate(256);
+        try {
+            int bytesRead = consoleChannel.read(buffer);
+            if (bytesRead > 0) {
+                buffer.flip();
+                byte[] bytes = new byte[buffer.remaining()];
+                buffer.get(bytes);
+                String input = new String(bytes).trim();
+
+                switch (input.toLowerCase()) {
+                    case "exit":
+                        System.out.println("Exiting");
+                        ServerSaveCommand interruption = new ServerSaveCommand(filename,cm);
+                        interruption.execute(new Request("0", new String[0]));
+                        System.exit(0);
+                        break;
+                    case "save":
+                        System.out.println("Saving");
+                        ServerSaveCommand interruption2 = new ServerSaveCommand(filename,cm);
+                        interruption2.execute(new Request("0", new String[0]));
+                        break;
+                    default:
+                        System.out.println("Unknown command: " + input);
+                }
+            }
+        } catch (IOException e) {
+            logger.error("Something wrong with server console");
+        }
+    }
+
 
     private static void doAccept(SelectionKey key) {
         try {
@@ -121,7 +165,7 @@ public class Main {
 
         } catch (IOException e) {
             //System.out.println("Гена ошибка в Accept");
-            logger.error("Гена ошибка в Accept");
+            logger.error("Gena, error in Accept");
         }
     }
 
@@ -134,7 +178,7 @@ public class Main {
         } catch (SocketException e) {
             key.cancel();
         } catch (IOException e) {
-            logger.error("Гена ошибка в Read");
+            logger.error("Gena, error in Read");
         }
 
     }
@@ -152,7 +196,7 @@ public class Main {
         } catch (SocketException e) {
             key.cancel();
         } catch (IOException e) {
-            logger.error("Гена ошибка в Write");
+            logger.error("Gena, error in Write");
         }
     }
 
@@ -171,7 +215,7 @@ public class Main {
             if (obj instanceof Request) {
                 return (Request) obj;
             } else {
-                logger.error("Пришел не Request");
+                logger.error("Unsupported type - not Request");
                 return null;
             }
 
@@ -182,10 +226,12 @@ public class Main {
     }
 
 
-    private static Response getResponse(Request request, Map<String, ServerCommand> commands) {
-        ServerCommand command = commands.get(request.getContent());
+    public static Response getResponse(Request request,Map<String,ServerCommand> commands) {
+        ServerCommand command = commands.get(request.getCommand());
+        if(command == null){
+            System.out.println(request);
+        }
         return command.execute(request);
-
     }
 
     private static byte[] serializeResponse(Response response) {

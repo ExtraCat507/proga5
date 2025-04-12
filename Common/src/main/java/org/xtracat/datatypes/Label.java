@@ -1,6 +1,8 @@
 package org.xtracat.datatypes;
 
-public class Label implements Comparable {
+import java.io.Serializable;
+
+public class Label implements Comparable, Serializable {
     private Long bands;
     private Double sales; //Значение поля должно быть больше 0
 

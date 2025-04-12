@@ -68,7 +68,7 @@ public class Main {
 
                 } else {
                     if (command == null) {
-                        throw new RuntimeException();
+                       continue;
                     }
 
                     // construct Request,
@@ -82,6 +82,8 @@ public class Main {
                     fileSet.remove(fileSet.size() - 1);
                     continue;
                 } else {
+                    ExitCommand interruption = new  ExitCommand(dispatcher);
+                    interruption.execute(0,new String[0]);
                     System.out.println("Лан, выхожу ");
                     break;
                 }
@@ -91,6 +93,7 @@ public class Main {
                 fileSet.clear();
                 continue;
             } catch (RuntimeException e) {
+                e.printStackTrace();
                 System.out.println("В файле(файлах) найдена неизвестная команда.\n Его обработка остановлена");
                 scannerStack.subList(1, scannerStack.size()).clear();
                 fileSet.clear();

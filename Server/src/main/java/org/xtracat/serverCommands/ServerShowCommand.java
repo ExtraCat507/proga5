@@ -5,6 +5,7 @@ import org.xtracat.client.util.Response;
 import org.xtracat.datatypes.MusicBand;
 import org.xtracat.server.CollectionManager;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 
@@ -18,10 +19,13 @@ public class ServerShowCommand implements ServerCommand {
     @Override
     public Response execute(Request request) {
         try {
-            LinkedList<MusicBand> bandList = (LinkedList<MusicBand>) cm.getList().stream().sorted((a, b) -> a.getName().compareTo(b.getName()));
+            ArrayList<MusicBand> bandList = new ArrayList<>();
+            bandList.addAll(cm.getList());
+            bandList.sort(Comparator.comparing(MusicBand::getName));
             return new Response("Список элементов коллекции:", bandList);
         } catch (Exception e) {
-            return new Response("Ошибка при получении коллекции: " + e.getMessage());
+            e.printStackTrace();
+            return new Response("Ошибка при получении коллекции: ");
         }
     }
 }

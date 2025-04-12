@@ -26,6 +26,8 @@ public class Serializer {
 
     public int save(String filename, CollectionManager cm) {
         File file = new File(filename);
+        file.setWritable(true);
+        file.setReadable(true);
 
         // Проверяем доступ на запись
         if (!file.canWrite()) {
@@ -49,7 +51,6 @@ public class Serializer {
 
     public BandsCollection load(String filename, CollectionManager cm) {
         File file = new File(filename);
-
         if (!file.exists() || !file.canRead()) {
             System.out.println("Такого файла не существует или нет нужных прав доступа\nСоздать файл? (y/n):");
             Scanner sc = new Scanner(System.in);

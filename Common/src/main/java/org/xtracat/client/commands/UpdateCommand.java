@@ -1,9 +1,6 @@
 package org.xtracat.client.commands;
 
-import org.xtracat.client.util.AdvancedScanner;
-import org.xtracat.client.util.Dispatcher;
-import org.xtracat.client.util.Request;
-import org.xtracat.client.util.Response;
+import org.xtracat.client.util.*;
 import org.xtracat.datatypes.MusicBand;
 
 import java.util.List;
@@ -11,13 +8,13 @@ import java.util.Scanner;
 
 public class UpdateCommand implements Command {
 
-    private final Dispatcher dispatcher;
+    private final MyDispatcher dispatcher;
     private final List<Scanner> scannerStack;
     private long id;
     private MusicBand musicBand;
     private int mode; // режим, передаваемый в execute
 
-    public UpdateCommand(Dispatcher dispatcher, List<Scanner> scannerStack) {
+    public UpdateCommand(MyDispatcher dispatcher, List<Scanner> scannerStack) {
         this.dispatcher = dispatcher;
         this.scannerStack = scannerStack;
     }

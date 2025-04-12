@@ -2,6 +2,7 @@ package org.xtracat.client.commands;
 
 import java.util.Map;
 import org.xtracat.client.util.Dispatcher;
+import org.xtracat.client.util.MyDispatcher;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 
@@ -9,7 +10,7 @@ public class HelpCommand implements Command {
 
     private final Map<String, Command> commands;
 
-    public HelpCommand(Dispatcher dispatcher, Map<String, Command> commands) {
+    public HelpCommand(MyDispatcher dispatcher, Map<String, Command> commands) {
         this.commands = commands;
     }
 

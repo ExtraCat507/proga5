@@ -1,27 +1,25 @@
 package org.xtracat.client.commands;
 
+import org.xtracat.client.util.Dispatcher;
+import org.xtracat.client.util.MyDispatcher;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 import org.xtracat.server.CollectionManager;
 import org.xtracat.storage.Serializer;
 
 public class SaveCommand implements Command {
-    private final Serializer sr;
-    private final String filename;
-    CollectionManager cm;
+    private MyDispatcher dispatcher;
 
-    public SaveCommand(String filename, CollectionManager collectionManager) {
-        this.sr = new Serializer();
-        this.filename = filename;
-        this.cm = collectionManager;
+    public SaveCommand(MyDispatcher dispatcher) {
+        this.dispatcher = dispatcher;
     }
 
     @Override
     public void execute(int mode, String[] args) {
-        int callback = sr.save(this.filename, cm);
-        if (callback == 0) {
-            System.out.println("Готово\n");
-        }
+        prepare();
+        Request request = buildRequest();
+        Response response = dispatcher.send(request);
+        processResponse(response);
     }
 
     @Override
@@ -31,12 +29,16 @@ public class SaveCommand implements Command {
 
     @Override
     public Request buildRequest() {
-        return null;
+        return new Request("save", null);
     }
 
     @Override
     public void processResponse(Response response) {
-
+        if (response != null) {
+            System.out.println(response.getMessage());
+        } else {
+            System.out.println("Нет ответа от сервера.");
+        }
     }
 
     @Override

@@ -1,9 +1,6 @@
 package org.xtracat.client.commands;
 
-import org.xtracat.client.util.AdvancedScanner;
-import org.xtracat.client.util.Dispatcher;
-import org.xtracat.client.util.Request;
-import org.xtracat.client.util.Response;
+import org.xtracat.client.util.*;
 import org.xtracat.datatypes.Label;
 import org.xtracat.datatypes.MusicBand;
 
@@ -12,12 +9,12 @@ import java.util.Scanner;
 
 public class FilterGreaterThanLabel implements Command {
 
-    private final Dispatcher dispatcher;
+    private final MyDispatcher dispatcher;
     private final List<Scanner> scannerStack;
     private Label comparedLabel;
     private int mode;
 
-    public FilterGreaterThanLabel(Dispatcher dispatcher, List<Scanner> scannerStack) {
+    public FilterGreaterThanLabel(MyDispatcher dispatcher, List<Scanner> scannerStack) {
         this.dispatcher = dispatcher;
         this.scannerStack = scannerStack;
     }

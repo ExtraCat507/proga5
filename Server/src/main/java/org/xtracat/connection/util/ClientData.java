@@ -4,6 +4,6 @@ import java.nio.ByteBuffer;
 public class ClientData {
     public ByteBuffer buffer;
     public ClientData() {
-        this.buffer = ByteBuffer.allocateDirect(1024);
+        this.buffer = ByteBuffer.allocateDirect(1_048_576);
     }
 }

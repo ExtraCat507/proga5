@@ -1,6 +1,7 @@
 package org.xtracat.client.commands;
 
 import org.xtracat.client.util.Dispatcher;
+import org.xtracat.client.util.MyDispatcher;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 import org.xtracat.datatypes.MusicBand;
@@ -9,9 +10,9 @@ import java.util.List;
 
 public class ShowCommand implements Command {
 
-    private final Dispatcher dispatcher;
+    private final MyDispatcher dispatcher;
 
-    public ShowCommand(Dispatcher dispatcher) {
+    public ShowCommand(MyDispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
 
@@ -32,6 +33,10 @@ public class ShowCommand implements Command {
             return;
         }
         Object data = response.getData();
+        if(data==null){
+            System.out.println("bebe");
+            System.out.println(response);
+        }
         if (data instanceof List) {
             List<MusicBand> bandList = (List<MusicBand>) data;
             if (bandList.isEmpty()) {

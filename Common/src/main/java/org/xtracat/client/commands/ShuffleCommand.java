@@ -1,14 +1,15 @@
 package org.xtracat.client.commands;
 
 import org.xtracat.client.util.Dispatcher;
+import org.xtracat.client.util.MyDispatcher;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 
 public class ShuffleCommand implements Command {
 
-    private final Dispatcher dispatcher;
+    private final MyDispatcher dispatcher;
 
-    public ShuffleCommand(Dispatcher dispatcher) {
+    public ShuffleCommand(MyDispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
 

@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
-public class Dispatcher {
+public class Dispatcher implements MyDispatcher{
 
     private static final String HOST = "localhost";
     private static final int PORT = 6789;
@@ -28,7 +28,7 @@ public class Dispatcher {
             //Object response = objectIn.readObject();
             Object response = deserializeResponse(in.readAllBytes());
             if (response instanceof Response) {
-                System.out.println("приняли норм респонс");
+                //System.out.println("приняли норм респонс");
                 return (Response) response;
             } else {
                 System.err.println("Получен некорректный объект вместо Response.");
