@@ -16,10 +16,15 @@ import java.util.*;
 
 import static java.nio.channels.SelectionKey.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Main {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) {
 
         System.out.println("Server side running");
+        logger.info("Сервер запущен");
 
         String filename;
         if (args.length != 0) {
@@ -55,6 +60,7 @@ public class Main {
             server.configureBlocking(false);
             server.register(selector, OP_ACCEPT);
             server.bind(new InetSocketAddress(port));
+            logger.info("Server started and listening on port {}", port);
             while (true) {
                 selector.select();
                 Set<SelectionKey> keys = selector.selectedKeys();
@@ -91,10 +97,11 @@ public class Main {
             }
             //selector.close();
         } catch (BindException e) {
-            System.out.println("Порт 6789 уже занят");
+            //System.out.println("Порт 6789 уже занят");
+            logger.error("Порт {} уже занят", port, e);
         } catch (Exception e) {
-            System.out.println("Гена все хуйня в целом");
-            e.printStackTrace();
+            //System.out.println("Гена все не так");
+            logger.error("Гена все не так", e);
         }
 
     }
@@ -110,9 +117,11 @@ public class Main {
             nk.interestOps(SelectionKey.OP_READ);
             nk.attach(clientData);
             key.selector().wakeup();
+            logger.info("Accepted new client connection");
 
         } catch (IOException e) {
-            System.out.println("Гена ошибка в Accept");
+            //System.out.println("Гена ошибка в Accept");
+            logger.error("Гена ошибка в Accept");
         }
     }
 
@@ -125,7 +134,7 @@ public class Main {
         } catch (SocketException e) {
             key.cancel();
         } catch (IOException e) {
-            System.out.println("Гена все хуйня в Read");
+            logger.error("Гена ошибка в Read");
         }
 
     }
@@ -135,13 +144,15 @@ public class Main {
             var sc = (SocketChannel) key.channel();
             var data = (ClientData) key.attachment();
             sc.write(data.buffer);
+            logger.debug("Wrote {} bytes to client", data.buffer);
             data.buffer.clear();
             sc.close();
             key.cancel();
+
         } catch (SocketException e) {
             key.cancel();
         } catch (IOException e) {
-            System.out.println("Гена все хуйня в Write");
+            logger.error("Гена ошибка в Write");
         }
     }
 
@@ -160,7 +171,7 @@ public class Main {
             if (obj instanceof Request) {
                 return (Request) obj;
             } else {
-                System.err.println("Deserialized object is not a Request.");
+                logger.error("Пришел не Request");
                 return null;
             }
 

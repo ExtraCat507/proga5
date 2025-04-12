@@ -23,7 +23,7 @@ public class ServerFilterGreaterThanLabel implements ServerCommand {
             if (comparedLabel == null) {
                 return new Response("Ошибка: переданный Label равен null");
             }
-            ArrayList<MusicBand> result = cm.filterGreaterThanLabel(comparedLabel);
+            ArrayList<MusicBand> result = (ArrayList<MusicBand>) cm.getList().stream().filter(s -> s.compareTo(comparedLabel) > 0);
             return new Response("Найдено элементов с лейблом больше заданного: " + result.size(), result);
         } catch (ClassCastException e) {
             return new Response("Ошибка: неверный тип данных в запросе, ожидался Label");

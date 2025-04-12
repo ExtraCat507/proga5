@@ -37,8 +37,9 @@ public class PrintAscendingListNumOfParticipants implements Command {
             } else {
                 System.out.println("Значения количества участников в порядке возрастания:");
                 for (Long num : numbers) {
-                    System.out.println(num);
+                    System.out.print(num + " ");
                 }
+                System.out.println();
             }
         } else {
             System.out.println(response.getMessage());

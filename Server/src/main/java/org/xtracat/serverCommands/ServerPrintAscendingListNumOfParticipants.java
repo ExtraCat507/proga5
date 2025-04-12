@@ -15,12 +15,7 @@ public class ServerPrintAscendingListNumOfParticipants implements ServerCommand 
     public Response execute(Request request) {
         try {
             long[] result = cm.printFieldAscendingNumberOfParticipants();
-            StringBuilder sb = new StringBuilder("[ ");
-            for (long num : result) {
-                sb.append(num).append(" ");
-            }
-            sb.append("]");
-            return new Response("Значения числа участников по возрастанию: " + sb.toString(), result);
+            return new Response("Значения числа участников по возрастанию: ", result);
         } catch (Exception e) {
             return new Response("Ошибка при выполнении команды: " + e.getMessage());
         }

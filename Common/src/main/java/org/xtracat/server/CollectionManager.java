@@ -84,6 +84,7 @@ public class CollectionManager { // Receiver (исполнитель)
         return result;
     }
 
+
     public ArrayList<MusicBand> filterGreaterThanLabel(Label label) {
         ArrayList<MusicBand> result = new ArrayList<>(this.bandsCollection.getNumOfElements());
         for (MusicBand band : this.getList()) {
