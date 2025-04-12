@@ -21,6 +21,8 @@ public class CollectionManager { // Receiver (исполнитель)
     }
 
     public void add(MusicBand p) {
+        Long id = getNewId();
+        p.setId(id);
         this.bandsCollection.add(p);
     }
 

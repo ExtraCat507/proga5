@@ -56,6 +56,11 @@ public class MusicBand implements Comparable {
         //return 0;
     }
 
+    public Long setId(Long id){
+        this.id = id;
+        return id;
+    }
+
     @Override
     public String toString() {
         if (label == null) {
