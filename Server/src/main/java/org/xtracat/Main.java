@@ -4,7 +4,7 @@ import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 import org.xtracat.connection.util.ClientData;
 import org.xtracat.server.CollectionManager;
-import org.xtracat.serverCommands.*;
+import org.xtracat.server.commands.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

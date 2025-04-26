@@ -203,12 +203,14 @@ public class AdvancedScanner {
     public MusicGenre enterMusicGenre() {
         System.out.println("Выберите жанр (оставьте пустым для null):");
         for (MusicGenre genre : MusicGenre.values()) {
+            if (genre == MusicGenre.INVALID) continue;
             System.out.println(genre);
         }
         while (true) {
             String input = sc.nextLine().trim();
             if (input.isEmpty()) return null;
-            if(input.equalsIgnoreCase("INVALID")){
+            if (input.equalsIgnoreCase("INVALID")) {
+                System.out.println("Неверный жанр! Попробуйте снова:");
                 continue;
             }
             try {

@@ -1,8 +1,7 @@
-package org.xtracat.serverCommands;
+package org.xtracat.server.commands;
 
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
-import org.xtracat.datatypes.MusicBand;
 import org.xtracat.server.CollectionManager;
 
 public class ServerCountGreaterThanNumberOfParticipants implements ServerCommand {

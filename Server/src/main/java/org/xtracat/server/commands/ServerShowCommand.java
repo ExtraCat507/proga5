@@ -1,4 +1,4 @@
-package org.xtracat.serverCommands;
+package org.xtracat.server.commands;
 
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
@@ -7,7 +7,6 @@ import org.xtracat.server.CollectionManager;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedList;
 
 public class ServerShowCommand implements ServerCommand {
     private final CollectionManager cm;
