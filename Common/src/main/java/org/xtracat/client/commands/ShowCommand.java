@@ -33,6 +33,7 @@ public class ShowCommand implements Command {
             return;
         }
         Object data = response.getData();
+        System.out.println(data);
         if(data==null){
             System.out.println("bebe");
             System.out.println(response);

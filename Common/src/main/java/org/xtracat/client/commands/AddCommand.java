@@ -45,7 +45,7 @@ public class AddCommand implements Command {
     @Override
     public void processResponse(Response response) {
         if (response != null) {
-            System.out.println(response.getMessage());
+            System.out.println("Успешно");
         } else {
             System.out.println("Нет ответа от сервера.");
         }

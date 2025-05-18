@@ -1,43 +1,38 @@
-package org.xtracat.server;
+package org.xtracat;
 
-import java.util.Scanner;
+import org.slf4j.Logger;
+import org.xtracat.singleton.SingletonLogger;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
+import java.nio.channels.Pipe;
 
 public class ServerConsole {
+    private final Logger logger = SingletonLogger.getLogger();
+    private Pipe.SinkChannel sinkChannel;
 
-    private static volatile boolean running = true; // used for graceful shutdown
 
-    public static void runConsole(String filename, CollectionManager cm) {
-        Scanner scanner = new Scanner(System.in);
+    public ServerConsole(Pipe.SinkChannel sinkChannel){
+        this.sinkChannel = sinkChannel;
+    }
 
-        while (running) {
-            if (scanner.hasNextLine()) {
-                String command = scanner.nextLine().trim();
-                processCommand(command, filename, cm);
+    public void run(){
+        Pipe.SinkChannel consoleSink = this.sinkChannel;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                byte[] bytes = (line + "\n").getBytes();
+                ByteBuffer buf = ByteBuffer.wrap(bytes);
+                while (buf.hasRemaining()) {
+                    consoleSink.write(buf);
+                }
             }
+        } catch (IOException e) {
+            logger.error("Error reading from System.in", e);
         }
     }
 
-    private static void processCommand(String command,String filename,CollectionManager cm) {
-        switch (command.toLowerCase()) {
-            case "exit":
-                System.out.println("Shutting down server...");
-                running = false;
-
-
-                System.exit(0);
-                break;
-
-            case "save":
-                System.out.println("Saving current state...");
-                // Call your save logic here (e.g., save database, write file, etc.)
-                break;
-
-            default:
-                System.out.println("Unknown command: " + command);
-        }
-    }
-
-    public static boolean isRunning() {
-        return running;
-    }
 }

@@ -29,6 +29,7 @@ public class Dispatcher implements MyDispatcher{
             Object response = deserializeResponse(in.readAllBytes());
             if (response instanceof Response) {
                 //System.out.println("приняли норм респонс");
+                tries=0;
                 return (Response) response;
             } else {
                 System.err.println("Получен некорректный объект вместо Response.");
@@ -69,7 +70,8 @@ public class Dispatcher implements MyDispatcher{
 
     private Response deserializeResponse(byte[] arr){
         try (ByteArrayInputStream bis = new ByteArrayInputStream(arr);
-             ObjectInputStream ois = new ObjectInputStream(bis)) {
+             ObjectInputStream ois = new ObjectInputStream(bis);
+        ) {
 
             Object obj = ois.readObject();
             if (obj instanceof Response) {

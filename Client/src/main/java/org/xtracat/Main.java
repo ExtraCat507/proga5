@@ -2,10 +2,6 @@ package org.xtracat;
 
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.*;
 import java.util.*;
 
 import org.xtracat.client.commands.*;
@@ -101,9 +97,6 @@ public class Main {
             }
 
         }
-
-//модуль Dispatcher для коннекта с сервером!
-
 
     }
 }
