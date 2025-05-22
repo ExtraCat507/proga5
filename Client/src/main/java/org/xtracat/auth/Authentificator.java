@@ -3,6 +3,7 @@ package org.xtracat.auth;
 import org.xtracat.client.util.MyDispatcher;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
+import org.xtracat.usershit.User;
 import org.xtracat.usershit.UserBuilder;
 import org.xtracat.usershit.UserRecord;
 
@@ -17,7 +18,7 @@ public class Authentificator {
         this.dispatcher = dispatcher;
     }
 
-    public UserRecord auth() {
+    public User auth() {
         System.out.println("Введите команду:");
         System.out.print("\n" +
                 "+------+------+\n" +
@@ -26,7 +27,7 @@ public class Authentificator {
                 "\n");
 
         String inp;
-        UserRecord resulted;
+        User resulted;
         while (true) {
             inp = scanner.nextLine().trim();
             switch (inp) {
@@ -66,49 +67,35 @@ public class Authentificator {
     }
 
 
-    private UserRecord login() {
+    private User login() {
         System.out.println("Инициирована аутентификация...");
-        UserBuilder userBuilder = new UserBuilder();
         System.out.println("Введите логин:");
         String userLogin = scanner.nextLine().trim();
-        userBuilder.setLogin(userLogin);
         System.out.println("Введите пароле:");
         String userPassword = scanner.nextLine().trim();
 
-        userBuilder.setPassword(userPassword);
-        UserRecord user = userBuilder.build();
+        User user = new User(userLogin,userPassword);
         Request authRequest = new Request("auth",null,user);
         Response authResponse = dispatcher.send(authRequest);
 
-        if ((boolean) authResponse.getData()) {
-            System.out.println("Успешный вход");
-            return user;
-        }
-        System.out.println("Неверный логин или пароль");
-        return null;
+        System.out.println(authResponse.getMessage());
+        return (User) authResponse.getData();
 
     }
 
-    private UserRecord register() {
+    private User register() {
         System.out.println("Добро пожаловать!");
-        UserBuilder userBuilder = new UserBuilder();
         System.out.println("Введите логин:");
         String userLogin = scanner.nextLine().trim();
-        userBuilder.setLogin(userLogin);
         System.out.println("Введите пароле:");
         String userPassword = scanner.nextLine().trim();
 
-        userBuilder.setPassword(userPassword);
-        UserRecord user = userBuilder.build();
+        User user = new User(userLogin,userPassword);
         Request authRequest = new Request("register",null , user);
         Response regResponse = dispatcher.send(authRequest);
 
-        if ((boolean) regResponse.getData()) {
-            System.out.println("Успешная регистрация");
-            return user;
-        }
-        System.out.println("Что-то пошло не так..");
-        return null;
+        System.out.println(regResponse.getMessage());
+        return (User) regResponse.getData();
 
 
     }

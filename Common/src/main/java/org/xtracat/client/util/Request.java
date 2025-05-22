@@ -1,18 +1,19 @@
 package org.xtracat.client.util;
 
+import org.xtracat.usershit.User;
 import org.xtracat.usershit.UserRecord;
 
 import java.io.Serializable;
 
 public class Request implements Serializable {
     String command;
-    UserRecord userRecord;
+    User user;
     Object content;
 
-    public Request(String command, Object content, UserRecord userRecord){
+    public Request(String command, Object content, User user){
         this.content = content;
         this.command = command;
-        this.userRecord = userRecord;
+        this.user = user;
     }
 
     public Request(String command, Object content) {
@@ -21,7 +22,7 @@ public class Request implements Serializable {
 
     @Override
     public String toString() {
-        return "Request : " + command + "; " + content + ". From user: " + userRecord;
+        return "Request : " + command + "; " + content + ". From user: " + user;
     }
 
     public Object getContent() {
@@ -30,6 +31,10 @@ public class Request implements Serializable {
 
     public String getCommand() {
         return command;
+    }
+
+    public User getUser(){
+        return user;
     }
 
 }

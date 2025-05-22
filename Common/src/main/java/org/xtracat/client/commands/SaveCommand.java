@@ -1,11 +1,9 @@
 package org.xtracat.client.commands;
 
-import org.xtracat.client.util.Dispatcher;
 import org.xtracat.client.util.MyDispatcher;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 import org.xtracat.server.CollectionManager;
-import org.xtracat.storage.Serializer;
 
 public class SaveCommand implements Command {
     private MyDispatcher dispatcher;

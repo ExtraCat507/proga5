@@ -7,6 +7,7 @@ import java.util.*;
 import org.xtracat.auth.Authentificator;
 import org.xtracat.client.commands.*;
 import org.xtracat.client.util.Dispatcher;
+import org.xtracat.usershit.User;
 import org.xtracat.usershit.UserRecord;
 
 public class Main {
@@ -24,8 +25,11 @@ public class Main {
         Dispatcher dispatcher = new Dispatcher();
 
         Authentificator authentificator = new Authentificator(sc,dispatcher);
-        UserRecord user =  authentificator.auth();
-
+        User user =  authentificator.auth();
+        if(user==null){
+            System.out.println("Не пройден вход");
+            System.exit(0);
+        }
 
         commands.put("help", new HelpCommand(dispatcher,commands));
         commands.put("add", new AddCommand(dispatcher,scannerStack));
