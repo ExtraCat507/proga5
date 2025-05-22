@@ -28,6 +28,8 @@ public class CommandHandler {
         commands.put("show", new ServerShowCommand(cm));
         commands.put("shuffle", new ServerShuffleCommand(cm));
         commands.put("update", new ServerUpdateCommand(cm));
+        commands.put("auth", new AuthCommand());
+        commands.put("register",new RegisterCommand());
     }
 
 

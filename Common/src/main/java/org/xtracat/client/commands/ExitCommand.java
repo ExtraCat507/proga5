@@ -26,7 +26,7 @@ public class ExitCommand implements Command {
     @Override
     public void processResponse(Response response) {
         if (response != null) {
-            System.out.println(response.getMessage());
+            System.out.println("Выходим из приложения");    //todo: добавить имя юзера
         } else {
             System.out.println("Нет ответа от сервера.");
         }

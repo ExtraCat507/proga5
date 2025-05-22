@@ -35,7 +35,7 @@ public class ShowCommand implements Command {
         Object data = response.getData();
         System.out.println(data);
         if(data==null){
-            System.out.println("bebe");
+            System.out.println("Пустой response. Возможно ошибка на сервере или коллекция пуста");
             System.out.println(response);
         }
         if (data instanceof List) {

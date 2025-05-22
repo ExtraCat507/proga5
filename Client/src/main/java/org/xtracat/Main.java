@@ -4,8 +4,10 @@ package org.xtracat;
 import java.io.File;
 import java.util.*;
 
+import org.xtracat.auth.Authentificator;
 import org.xtracat.client.commands.*;
 import org.xtracat.client.util.Dispatcher;
+import org.xtracat.usershit.UserRecord;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,6 +22,9 @@ public class Main {
         scannerStack.add(sc);
 
         Dispatcher dispatcher = new Dispatcher();
+
+        Authentificator authentificator = new Authentificator(sc,dispatcher);
+        UserRecord user =  authentificator.auth();
 
 
         commands.put("help", new HelpCommand(dispatcher,commands));

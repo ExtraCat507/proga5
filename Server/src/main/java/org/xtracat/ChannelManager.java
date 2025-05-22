@@ -85,10 +85,10 @@ public class ChannelManager {
             buffer.flip();
             channel.write(buffer);
             logger.debug("Wrote {} bytes to client", buffer.limit());
-            for (var i : serializeResponse(response)) {
-                System.out.print(i + " ");
-            }
-            System.out.println();
+//            for (var i : serializeResponse(response)) {
+//                System.out.print(i + " ");
+//            }
+//            System.out.println();
 
 
             buffer.clear();
