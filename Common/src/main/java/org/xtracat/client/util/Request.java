@@ -17,7 +17,7 @@ public class Request implements Serializable {
     }
 
     public Request(String command, Object content) {
-        new Request(command,content,null);
+        this(command,content,null);
     }
 
     @Override
@@ -35,6 +35,10 @@ public class Request implements Serializable {
 
     public User getUser(){
         return user;
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
 }

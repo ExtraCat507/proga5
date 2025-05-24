@@ -1,5 +1,7 @@
 package org.xtracat.server;
 
+import org.xtracat.dao.DatabaseManager;
+import org.xtracat.dao.SingletonDAO;
 import org.xtracat.datatypes.BandsCollection;
 import org.xtracat.datatypes.Label;
 import org.xtracat.datatypes.MusicBand;
@@ -7,12 +9,14 @@ import org.xtracat.storage.Serializer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.List;
 
 public class CollectionManager { // Receiver (исполнитель)
     BandsCollection bandsCollection;
     String filename;
     Serializer sz;
+    DatabaseManager dao = SingletonDAO.getDao();
+
 
     public CollectionManager(String filename) {
         this.sz = new Serializer();
@@ -21,12 +25,13 @@ public class CollectionManager { // Receiver (исполнитель)
     }
 
     public void add(MusicBand p) {
-        Long id = getNewId();
-        p.setId(id);
+        //
+      //  Long id = getNewId();
+      //  p.setId(id);
         this.bandsCollection.add(p);
     }
 
-    public LinkedList<MusicBand> getList() {
+    public List<MusicBand> getList() {
         return bandsCollection.getMusicBands();
     }
 
@@ -107,7 +112,4 @@ public class CollectionManager { // Receiver (исполнитель)
         return result;
     }
 
-    public long getNewId() {
-        return bandsCollection.getNewId();
-    }
 }

@@ -2,6 +2,7 @@ package org.xtracat.client.commands;
 
 import org.xtracat.client.util.*;
 import org.xtracat.datatypes.MusicBand;
+import org.xtracat.usershit.User;
 
 import java.util.List;
 import java.util.Scanner;
@@ -47,7 +48,7 @@ public class UpdateCommand implements Command {
     }
 
     @Override
-    public void execute(int mode, String[] args) {
+    public void execute(int mode, User user, String[] args) {
         this.mode = mode;
         try {
             id = Long.parseLong(args[0]);
@@ -63,6 +64,7 @@ public class UpdateCommand implements Command {
             return;
         }
         Request request = buildRequest();
+        request.setUser(user);
         Response response = dispatcher.send(request);
         processResponse(response);
     }

@@ -1,4 +1,4 @@
-package org.xtracat.singleton;
+package org.xtracat.logger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -3,7 +3,7 @@ package org.xtracat;
 import org.slf4j.Logger;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
-import org.xtracat.singleton.SingletonLogger;
+import org.xtracat.logger.SingletonLogger;
 
 import java.io.*;
 import java.net.SocketException;

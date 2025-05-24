@@ -3,6 +3,7 @@ package org.xtracat.client.commands;
 import org.xtracat.client.util.*;
 import org.xtracat.datatypes.Label;
 import org.xtracat.datatypes.MusicBand;
+import org.xtracat.usershit.User;
 
 import java.util.List;
 import java.util.Scanner;
@@ -62,13 +63,14 @@ public class FilterGreaterThanLabel implements Command {
     }
 
     @Override
-    public void execute(int mode, String[] args) {
+    public void execute(int mode, User user, String[] args) {
         this.mode = mode;
         prepare();
         if (comparedLabel == null) {
             return;
         }
         Request request = buildRequest();
+        request.setUser(user);
         Response response = dispatcher.send(request);
         processResponse(response);
     }

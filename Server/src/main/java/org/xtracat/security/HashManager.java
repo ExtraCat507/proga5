@@ -13,25 +13,26 @@ public class HashManager {
     final static String PEPPER = "7``3+ib65-mVLC(#";
 
     public static PasswordRecord hash(String passwd) {
+        String salt = getRandomString();
+        return hashWithSalt(passwd,salt);
+    }
+
+    public static PasswordRecord hashWithSalt(String password, String salt){
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("SHA-384");
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-
-        String salt = getRandomString();
         byte[] resultHash;
         try {
             resultHash =  md.digest(
-                    (passwd + PEPPER + salt).getBytes("UTF-8"));
+                    (password + PEPPER + salt).getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
 
         return new PasswordRecord(salt,resultHash);
-
-
     }
 
     private static String getRandomString() {

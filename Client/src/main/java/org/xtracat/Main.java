@@ -8,7 +8,6 @@ import org.xtracat.auth.Authentificator;
 import org.xtracat.client.commands.*;
 import org.xtracat.client.util.Dispatcher;
 import org.xtracat.usershit.User;
-import org.xtracat.usershit.UserRecord;
 
 public class Main {
     public static void main(String[] args) {
@@ -68,7 +67,7 @@ public class Main {
                     }
 
                     // construct Request,
-                    command.execute(0, Arrays.copyOfRange(tokens, 1, tokens.length));
+                    command.execute(0, user, Arrays.copyOfRange(tokens, 1, tokens.length));
 
 
                 } else {
@@ -77,7 +76,7 @@ public class Main {
                     }
 
                     // construct Request,
-                    command.execute(1, Arrays.copyOfRange(tokens, 1, tokens.length));
+                    command.execute(1, user, Arrays.copyOfRange(tokens, 1, tokens.length));
                 }
 
             } catch (NoSuchElementException e) {
@@ -88,7 +87,7 @@ public class Main {
                     continue;
                 } else {
                     ExitCommand interruption = new  ExitCommand(dispatcher);
-                    interruption.execute(0,new String[0]);
+                    interruption.execute(0, user, new String[0]);
                     System.out.println("Лан, выхожу ");
                     break;
                 }

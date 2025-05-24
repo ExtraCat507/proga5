@@ -4,9 +4,8 @@ import org.xtracat.client.util.MyDispatcher;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 import org.xtracat.usershit.User;
-import org.xtracat.usershit.UserBuilder;
-import org.xtracat.usershit.UserRecord;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Authentificator {
@@ -19,6 +18,7 @@ public class Authentificator {
     }
 
     public User auth() {
+
         System.out.println("Введите команду:");
         System.out.print("\n" +
                 "+------+------+\n" +
@@ -26,44 +26,49 @@ public class Authentificator {
                 "+------+------+\n" +
                 "\n");
 
-        String inp;
-        User resulted;
-        while (true) {
-            inp = scanner.nextLine().trim();
-            switch (inp) {
-                case "/log":
-                    resulted = login();
-                    if(resulted == null){
-                        System.out.println("Введите команду:");
-                        System.out.print("\n" +
-                                "+------+------+\n" +
-                                "| /log | /reg |\n" +
-                                "+------+------+\n" +
-                                "\n");
-                        continue;
-                    }
-                    return resulted;
-                case "/reg":
-                    resulted = register();
-                    if(resulted == null){
-                        System.out.println("Введите команду:");
-                        System.out.print("\n" +
-                                "+------+------+\n" +
-                                "| /log | /reg |\n" +
-                                "+------+------+\n" +
-                                "\n");
-                        continue;
-                    }
-                    return resulted;
-                case "exit":
-                    System.out.println("Exiting...");
-                    System.exit(0);
-                default:
-                    System.out.println("Wrong input!");
+        try {
+            String inp;
+            User resulted;
+            while (true) {
+                inp = scanner.nextLine().trim();
+                switch (inp) {
+                    case "/log":
+                        resulted = login();
+                        if (resulted == null) {
+                            System.out.println("Введите команду:");
+                            System.out.print("\n" +
+                                    "+------+------+\n" +
+                                    "| /log | /reg |\n" +
+                                    "+------+------+\n" +
+                                    "\n");
+                            continue;
+                        }
+                        return resulted;
+                    case "/reg":
+                        resulted = register();
+                        if (resulted == null) {
+                            System.out.println("Введите команду:");
+                            System.out.print("\n" +
+                                    "+------+------+\n" +
+                                    "| /log | /reg |\n" +
+                                    "+------+------+\n" +
+                                    "\n");
+                            continue;
+                        }
+                        return resulted;
+                    case "exit":
+                        System.out.println("Exiting...");
+                        System.exit(0);
+                    default:
+                        System.out.println("Wrong input!");
 
+                }
             }
+        }catch (NoSuchElementException e){
+            System.out.println("Опа! Контрл Ди не работает)");
+            System.exit(0);
+            return null;
         }
-
     }
 
 

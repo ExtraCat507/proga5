@@ -34,7 +34,6 @@ public class MusicBand implements Comparable, Serializable {
         this.singlesCount = singlesCount;
         this.genre = genre;
         this.label = label;
-        this.id = id;
     }
 
 

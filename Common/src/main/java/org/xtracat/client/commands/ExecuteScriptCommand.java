@@ -1,15 +1,15 @@
 package org.xtracat.client.commands;
 
-import org.xtracat.client.util.Dispatcher;
 import org.xtracat.client.util.MyDispatcher;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
+import org.xtracat.usershit.User;
 
 import java.io.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
+//КЛИЕНТСКАЯ КОМАНДА
 public class ExecuteScriptCommand implements Command {
     Map<String, Command> commands;
     List<Scanner> scannerStack;
@@ -23,7 +23,7 @@ public class ExecuteScriptCommand implements Command {
     }
 
     @Override
-    public void execute(int mode, String[] args) {
+    public void execute(int mode, User user, String[] args) {
 
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(args[0]))) {
             Scanner sc = new Scanner(reader);

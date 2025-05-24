@@ -1,9 +1,9 @@
 package org.xtracat.client.commands;
 
-import org.xtracat.client.util.Dispatcher;
 import org.xtracat.client.util.MyDispatcher;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
+import org.xtracat.usershit.User;
 
 public class ClearCommand implements Command {
 
@@ -26,16 +26,17 @@ public class ClearCommand implements Command {
     @Override
     public void processResponse(Response response) {
         if (response != null) {
-            System.out.println(response.getMessage());
+            System.out.println("Коллекция очищена");
         } else {
             System.out.println("Нет ответа от сервера.");
         }
     }
 
     @Override
-    public void execute(int mode, String[] args) {
+    public void execute(int mode, User user, String[] args) {
         prepare();
         Request request = buildRequest();
+        request.setUser(user);
         Response response = dispatcher.send(request);
         processResponse(response);
     }

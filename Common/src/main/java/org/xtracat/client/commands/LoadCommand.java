@@ -3,11 +3,12 @@ package org.xtracat.client.commands;
 
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
-
+import org.xtracat.usershit.User;
+@Deprecated
 public class LoadCommand implements Command {
 
     @Override
-    public void execute(int mode, String[] args) {
+    public void execute(int mode, User user, String[] args) {
         //cm.load(args[0]);
     }
 

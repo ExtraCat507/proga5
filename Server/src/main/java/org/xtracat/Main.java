@@ -2,10 +2,12 @@ package org.xtracat;
 
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
+import org.xtracat.dao.DatabaseManager;
+import org.xtracat.dao.SingletonDAO;
 import org.xtracat.server.CollectionManager;
 import org.xtracat.server.commands.*;
 import org.slf4j.Logger;
-import org.xtracat.singleton.SingletonLogger;
+import org.xtracat.logger.SingletonLogger;
 
 import java.io.*;
 import java.net.*;
@@ -25,6 +27,8 @@ public class Main {
     private static final ForkJoinPool execPool = new ForkJoinPool();
     private static final ExecutorService writePool = Executors.newFixedThreadPool(5);
 
+    private static final String dbUrl = "jdbc:postgresql://localhost:5432/studs";
+    private static final String dbUser = "s467467";
 
     public static void main(String[] args) {
         int port;
@@ -39,6 +43,9 @@ public class Main {
 
         String filename = (args.length != 0) ? args[0] : "collection.xml";
         logger.info("Using collection file: {}", filename);
+        Properties info = getDBPassword();
+
+        DatabaseManager dao = SingletonDAO.getDao(dbUrl,info);
         CollectionManager cm = new CollectionManager(filename);
         CommandHandler commandHandler = new CommandHandler(filename, cm);
         ChannelManager channelManager = new ChannelManager();
@@ -154,6 +161,22 @@ public class Main {
         } catch (IOException e) {
             logger.error("Error handling console input", e);
         }
+    }
+
+    private static Properties getDBPassword(){
+        Properties info = new Properties();
+        try {
+            info.load(new FileInputStream("db.cfg"));
+        } catch (IOException e) {
+            Scanner scc = new Scanner(System.in);
+            System.out.println("Database config not found, enter username:");
+            String user = scc.nextLine().trim();
+            System.out.println("And password:");
+            String password = scc.nextLine().trim();
+            info.put("user",user);
+            info.put("password",password);
+        }
+        return info;
     }
 
 }

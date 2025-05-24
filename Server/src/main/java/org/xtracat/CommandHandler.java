@@ -8,7 +8,7 @@ import org.xtracat.server.commands.*;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
-import org.xtracat.singleton.SingletonLogger;
+import org.xtracat.logger.SingletonLogger;
 
 public class CommandHandler {
     private Map<String, ServerCommand> commands = new HashMap<>();

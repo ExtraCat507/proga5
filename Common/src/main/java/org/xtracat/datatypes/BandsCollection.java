@@ -6,10 +6,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true) // Игнорирует неизвестные поля
@@ -17,23 +15,18 @@ import java.util.LinkedList;
 public class BandsCollection {
     @JacksonXmlElementWrapper(localName = "musicBands")
     @JacksonXmlProperty(localName = "musicBand")
-    private final LinkedList<MusicBand> musicBands;
+    private final List<MusicBand> musicBands;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private final ZonedDateTime initializationDate;
-    private Long currentId;
 
     public BandsCollection() {
-        musicBands = new LinkedList<>();
+        musicBands = new CopyOnWriteArrayList<>();
         initializationDate = ZonedDateTime.now();
-        currentId = 0L;
     }
 
-    public Long getCurrentId(){
-        return this.currentId;
-    }
 
     //@JsonIgnore
-    public LinkedList<MusicBand> getMusicBands() {
+    public List<MusicBand> getMusicBands() {
         return this.musicBands;
     }
 
@@ -89,17 +82,10 @@ public class BandsCollection {
         return "Коллекция типов: " + MusicBand.class + "\n" + "Дата инициализации:" + this.initializationDate + "\n" + "Количество элементов: " + getNumOfElements() + "\n";
     }
 
-    @JsonIgnore
-    public Long getNewId() {
-        return ++currentId;
-    }
 
     public void validate() throws IllegalArgumentException {
         if (musicBands == null || initializationDate == null) {
             throw new IllegalArgumentException();
-        }
-        if(currentId == null){
-            currentId = 0L;
         }
         if(initializationDate == null){
             throw new IllegalArgumentException();
@@ -122,9 +108,6 @@ public class BandsCollection {
             if (ids.contains(band.getId()) || band.getId() == null) {
                 iter.remove();
                 continue;
-            }
-            if (band.getId() > currentId) {
-                currentId = band.getId();
             }
 
 

@@ -1,7 +1,7 @@
 package org.xtracat;
 
 import org.slf4j.Logger;
-import org.xtracat.singleton.SingletonLogger;
+import org.xtracat.logger.SingletonLogger;
 
 import java.io.BufferedReader;
 import java.io.IOException;

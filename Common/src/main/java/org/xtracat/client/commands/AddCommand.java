@@ -2,6 +2,7 @@ package org.xtracat.client.commands;
 
 import org.xtracat.client.util.*;
 import org.xtracat.datatypes.MusicBand;
+import org.xtracat.usershit.User;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,7 +40,7 @@ public class AddCommand implements Command {
         if (musicBand == null) {
             return null;
         }
-        return new Request("add", musicBand);
+        return new Request("add",musicBand);
     }
 
     @Override
@@ -52,10 +53,11 @@ public class AddCommand implements Command {
     }
 
     @Override
-    public void execute(int mode, String[] args) {
+    public void execute(int mode, User user, String[] args) {
         this.mode = mode;
         prepare();
         Request request = buildRequest();
+        request.setUser(user);
         if (request != null) {
             Response response = dispatcher.send(request);
             processResponse(response);

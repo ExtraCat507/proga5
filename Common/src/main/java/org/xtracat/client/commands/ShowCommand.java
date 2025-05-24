@@ -1,10 +1,10 @@
 package org.xtracat.client.commands;
 
-import org.xtracat.client.util.Dispatcher;
 import org.xtracat.client.util.MyDispatcher;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 import org.xtracat.datatypes.MusicBand;
+import org.xtracat.usershit.User;
 
 import java.util.List;
 
@@ -22,9 +22,10 @@ public class ShowCommand implements Command {
     }
 
     @Override
-    public Request buildRequest() {
-        return new Request("show", null);
+    public Request buildRequest(){
+        return new Request("show",null);
     }
+
 
     @Override
     public void processResponse(Response response) {
@@ -55,9 +56,10 @@ public class ShowCommand implements Command {
     }
 
     @Override
-    public void execute(int mode, String[] args) {
+    public void execute(int mode, User user, String[] args) {
         prepare();
         Request request = buildRequest();
+        request.setUser(user);
         Response response = dispatcher.send(request);
         processResponse(response);
     }

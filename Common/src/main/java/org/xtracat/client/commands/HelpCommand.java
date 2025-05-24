@@ -1,10 +1,11 @@
 package org.xtracat.client.commands;
 
 import java.util.Map;
-import org.xtracat.client.util.Dispatcher;
+
 import org.xtracat.client.util.MyDispatcher;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
+import org.xtracat.usershit.User;
 
 public class HelpCommand implements Command {
 
@@ -34,7 +35,7 @@ public class HelpCommand implements Command {
     }
 
     @Override
-    public void execute(int mode, String[] args) {
+    public void execute(int mode, User user, String[] args) {
         prepare();
         processResponse(null);
     }
