@@ -2,7 +2,7 @@ package org.xtracat.server.commands;
 
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
-import org.xtracat.server.CollectionManager;
+import org.xtracat.CollectionManager;
 
 public class ServerRemoveByIndexCommand implements ServerCommand {
     private final CollectionManager cm;
@@ -16,8 +16,8 @@ public class ServerRemoveByIndexCommand implements ServerCommand {
         try {
             String content = (String) request.getContent();
             int index = Integer.parseInt(content.trim());
-            int callback = cm.removeByIndex(index);
-            if (callback == 0) {
+            long callback = cm.removeByIndex(index, request.getUser().login());
+            if (callback >= 0) {
                 return new Response("Элемент успешно удален");
             } else if (callback == -1) {
                 return new Response("Ошибка: индекс вне диапазона");

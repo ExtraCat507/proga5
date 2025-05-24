@@ -21,7 +21,7 @@ public class ChannelManager {
 
     public Request readRequest(SocketChannel channel) {
 
-        ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+        ByteBuffer buffer = ByteBuffer.allocateDirect(1048576);
         try {
             int bytesRead = channel.read(buffer);
             if (bytesRead == -1) {

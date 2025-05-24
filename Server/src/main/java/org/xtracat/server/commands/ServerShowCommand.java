@@ -3,7 +3,7 @@ package org.xtracat.server.commands;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 import org.xtracat.datatypes.MusicBand;
-import org.xtracat.server.CollectionManager;
+import org.xtracat.CollectionManager;
 
 import java.util.ArrayList;
 import java.util.Comparator;

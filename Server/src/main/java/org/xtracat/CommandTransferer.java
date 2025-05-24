@@ -2,7 +2,6 @@ package org.xtracat;
 
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
-import org.xtracat.server.CollectionManager;
 import org.xtracat.server.commands.*;
 
 import java.util.HashMap;
@@ -18,7 +17,7 @@ public class CommandTransferer {
         } else {
             filename = "collection.xml";
         }
-        CollectionManager cm = new CollectionManager(filename);
+        CollectionManager cm = new CollectionManager();
 
 
         commands.put("add",new ServerAddCommand(cm));
@@ -29,8 +28,8 @@ public class CommandTransferer {
         commands.put("info", new ServerInfoCommand(cm));
         commands.put("remove_by_id", new ServerRemoveByIdCommand(cm));
         commands.put("remove_at_index", new ServerRemoveByIndexCommand(cm));
-        commands.put("remove_last", new ServerRemoveLastCommand(cm));
-        commands.put("exit", new ServerSaveCommand(filename, cm));
+      //  commands.put("remove_last", new ServerRemoveLastCommand(cm));
+        commands.put("exit", new ServerSaveCommand(cm));
         commands.put("show", new ServerShowCommand(cm));
         commands.put("shuffle", new ServerShuffleCommand(cm));
         commands.put("update", new ServerUpdateCommand(cm));

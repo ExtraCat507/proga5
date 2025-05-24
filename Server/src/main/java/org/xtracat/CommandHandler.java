@@ -2,7 +2,6 @@ package org.xtracat;
 
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
-import org.xtracat.server.CollectionManager;
 import org.xtracat.server.commands.*;
 
 import java.util.HashMap;
@@ -14,7 +13,7 @@ public class CommandHandler {
     private Map<String, ServerCommand> commands = new HashMap<>();
     private final Logger logger = SingletonLogger.getLogger();
 
-    public CommandHandler(String filename, CollectionManager cm){
+    public CommandHandler(CollectionManager cm){
         commands.put("add", new ServerAddCommand(cm));
         commands.put("clear", new ServerClearCommand(cm));
         commands.put("count_greater_than_number_of_participants", new ServerCountGreaterThanNumberOfParticipants(cm));
@@ -23,8 +22,8 @@ public class CommandHandler {
         commands.put("info", new ServerInfoCommand(cm));
         commands.put("remove_by_id", new ServerRemoveByIdCommand(cm));
         commands.put("remove_at_index", new ServerRemoveByIndexCommand(cm));
-        commands.put("remove_last", new ServerRemoveLastCommand(cm));
-        commands.put("exit", new ServerSaveCommand(filename, cm));
+        //commands.put("remove_last", new ServerRemoveLastCommand(cm));
+        commands.put("exit", new ServerSaveCommand(cm));
         commands.put("show", new ServerShowCommand(cm));
         commands.put("shuffle", new ServerShuffleCommand(cm));
         commands.put("update", new ServerUpdateCommand(cm));

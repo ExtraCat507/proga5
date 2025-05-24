@@ -3,7 +3,7 @@ package org.xtracat.server.commands;
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 import org.xtracat.datatypes.MusicBand;
-import org.xtracat.server.CollectionManager;
+import org.xtracat.CollectionManager;
 
 public class ServerUpdateCommand implements ServerCommand {
     private final CollectionManager cm;
@@ -18,6 +18,7 @@ public class ServerUpdateCommand implements ServerCommand {
             Object[] payload = (Object[]) request.getContent();
             long id = (Long) payload[0];
             MusicBand newBand = (MusicBand) payload[1];
+            newBand.setAuthor(request.getUser().login());
 
             if (cm.findById(id) == -1) {
                 return new Response("Ошибка: элемента с таким id не существует.");

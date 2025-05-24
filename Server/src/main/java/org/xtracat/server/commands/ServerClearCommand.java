@@ -2,7 +2,7 @@ package org.xtracat.server.commands;
 
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
-import org.xtracat.server.CollectionManager;
+import org.xtracat.CollectionManager;
 
 public class ServerClearCommand implements ServerCommand {
     CollectionManager cm;
@@ -15,7 +15,7 @@ public class ServerClearCommand implements ServerCommand {
     @Override
     public Response execute(Request request) {
         try {
-            cm.clearCollection();
+            cm.clearCollection(request.getUser());
             return new Response("Успешное очищение коллекции");
         } catch (Exception e) {
             return new Response("Что-то пошло не так");

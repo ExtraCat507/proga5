@@ -1,33 +1,46 @@
-package org.xtracat.server;
+package org.xtracat;
 
+import org.slf4j.Logger;
 import org.xtracat.dao.DatabaseManager;
 import org.xtracat.dao.SingletonDAO;
 import org.xtracat.datatypes.BandsCollection;
 import org.xtracat.datatypes.Label;
 import org.xtracat.datatypes.MusicBand;
-import org.xtracat.storage.Serializer;
+import org.xtracat.logger.SingletonLogger;
+import org.xtracat.usershit.User;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class CollectionManager { // Receiver (исполнитель)
     BandsCollection bandsCollection;
-    String filename;
-    Serializer sz;
     DatabaseManager dao = SingletonDAO.getDao();
+    private static final Logger logger = SingletonLogger.getLogger();
 
 
-    public CollectionManager(String filename) {
-        this.sz = new Serializer();
-        this.filename = filename;
-        this.bandsCollection = sz.load(filename, this);
+    public CollectionManager() {
+        //this.bandsCollection = sz.load(filename, this);
+        try {
+            this.bandsCollection = dao.getAll();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            this.bandsCollection = new BandsCollection();
+            dao.resetTables();
+        }
     }
 
     public void add(MusicBand p) {
-        //
-      //  Long id = getNewId();
-      //  p.setId(id);
+        Long id = null;
+        try {
+            id = dao.add(p).getId();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        p.setId(id);
+        //System.out.println("VSE NORM BROOOOOOOOOO");
         this.bandsCollection.add(p);
     }
 
@@ -39,14 +52,22 @@ public class CollectionManager { // Receiver (исполнитель)
         return bandsCollection;
     }
 
-    public void clearCollection() {
-        this.bandsCollection.clear();
+    public void clearCollection(User user) {
+        this.bandsCollection.clear(user.login());
+        System.out.println(this.bandsCollection.getMusicBands());
+        dao.clear(user.login());
     }
 
     public int changeById(long id, MusicBand correcterBand) {
         int previousBandIndex = findById(id);
-        this.bandsCollection.changeById(previousBandIndex, correcterBand);
-        return 0;
+        correcterBand.setId(id);
+        try {
+            dao.update(correcterBand);
+            this.bandsCollection.changeById(previousBandIndex, correcterBand);
+            return 0;
+        } catch (SQLException e) {
+            return -1;
+        }
     }
 
     public int findById(long id) {    // id in the strucure -> id in the LinkedList
@@ -57,22 +78,39 @@ public class CollectionManager { // Receiver (исполнитель)
         return -1;
     }
 
-    public int removeById(long id) {
+    public int removeById(long id, String login) {
         int index = findById(id);
-        this.bandsCollection.removeByIndex(index);
+        try {
+            if(dao.remove(id,login)){
+                this.bandsCollection.removeByIndex(index);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
         return 0;
     }
 
-    public int removeByIndex(int id) {
-        int callback = this.bandsCollection.removeByIndex(id);
-        return callback;
+    public long removeByIndex(int index, String login) {
+        long id = this.bandsCollection.removeByIndex(index);
+        try {
+            dao.remove(id,login);
+        } catch (SQLException e) {
+            return -1;
+        }
+        return id;
     }
 
 
-    public int removeLast() {
-        int callback = this.bandsCollection.removeLast();
-        return callback;
-    }
+//    public long removeLast() {
+//        long id = this.bandsCollection.removeLast();
+//        try {
+//            dao.remove(id);
+//        } catch (SQLException e) {
+//            return -1;
+//        }
+//        return id;
+//    }
 
     public void shuffle() {
         this.bandsCollection.shuffle();

@@ -17,11 +17,20 @@ public class BandsCollection {
     @JacksonXmlProperty(localName = "musicBand")
     private final List<MusicBand> musicBands;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    private final ZonedDateTime initializationDate;
+    private ZonedDateTime initializationDate;
 
     public BandsCollection() {
         musicBands = new CopyOnWriteArrayList<>();
         initializationDate = ZonedDateTime.now();
+    }
+
+    public BandsCollection(ZonedDateTime initializationDate) {
+        musicBands = new CopyOnWriteArrayList<>();
+        this.initializationDate = initializationDate;
+    }
+
+    public void setInitializationDate(ZonedDateTime timestamp){
+        initializationDate = timestamp;
     }
 
 
@@ -43,25 +52,35 @@ public class BandsCollection {
         this.musicBands.add(p);
     }
 
-    public int removeByIndex(int index) {
+    /**
+    @returns Id of deleted music band
+    **/
+    public long removeByIndex(int index) {
         if (index < 0 || index >= getNumOfElements()) {
             return -1;
         }
+        MusicBand band = musicBands.get(index);
         musicBands.remove(index);
-        return 0;
+        System.out.println(band.getId());
+        return band.getId();
     }
 
-    public int removeLast() {
+    public long removeLast() {
         if (getNumOfElements() == 0) {
             return -1;
         }
         //System.out.println("removing at " + (numOfElements-1));
-        int callback = this.removeByIndex(getNumOfElements() - 1);
+        long callback = this.removeByIndex(getNumOfElements() - 1);
         return callback;
     }
 
-    public void clear() {
-        musicBands.clear();
+    public void clear(String userlog) {
+        for(MusicBand band : musicBands){
+            if (band.getAuthor().equals(userlog)){
+                musicBands.remove(band);
+            }
+        }
+        //musicBands.clear();
     }
 
     public void changeById(int index, MusicBand correcterBand) {

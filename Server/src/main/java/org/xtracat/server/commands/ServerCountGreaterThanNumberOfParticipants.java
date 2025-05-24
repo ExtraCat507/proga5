@@ -2,7 +2,7 @@ package org.xtracat.server.commands;
 
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
-import org.xtracat.server.CollectionManager;
+import org.xtracat.CollectionManager;
 
 public class ServerCountGreaterThanNumberOfParticipants implements ServerCommand {
     private final CollectionManager cm;

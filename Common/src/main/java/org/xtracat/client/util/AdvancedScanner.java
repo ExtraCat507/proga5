@@ -4,7 +4,6 @@ import org.xtracat.datatypes.Coordinates;
 import org.xtracat.datatypes.Label;
 import org.xtracat.datatypes.MusicBand;
 import org.xtracat.datatypes.MusicGenre;
-import org.xtracat.server.CollectionManager;
 import org.xtracat.server.CoordinatesBuilder;
 import org.xtracat.server.LabelBuilder;
 import org.xtracat.server.MusicBandBuilder;
@@ -123,7 +122,7 @@ public class AdvancedScanner {
         MusicGenre genre = enterMusicGenre();
         Label label = enterLabel();
         MusicBandBuilder builder = new MusicBandBuilder();
-        return builder.build(name, coordinates, ZonedDateTime.now(), numberOfParticipants, singlesCount, genre, label);
+        return builder.build(name, coordinates, ZonedDateTime.now() ,numberOfParticipants, singlesCount, genre, label);
     }
 
     public MusicBand createMusicBandInScript() {
@@ -135,7 +134,7 @@ public class AdvancedScanner {
             MusicGenre genre = enterMusicGenreInScript();
             Label label = enterLabelInScript();
             MusicBandBuilder builder = new MusicBandBuilder();
-            return builder.build(name, coordinates, ZonedDateTime.now(), numberOfParticipants, singlesCount, genre, label);
+            return builder.build(name, coordinates,ZonedDateTime.now() , numberOfParticipants, singlesCount, genre, label);
         } catch (IllegalArgumentException e) {
             System.out.println("Неверные данные при вводе MusicBand(или одного из полей)");
             throw new IllegalArgumentException();

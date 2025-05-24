@@ -1,6 +1,7 @@
 package org.xtracat.datatypes;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
 import com.fasterxml.jackson.annotation.*;
@@ -17,6 +18,7 @@ public class MusicBand implements Comparable, Serializable {
     private Integer singlesCount; //Поле не может быть null, Значение поля должно быть больше 0
     private MusicGenre genre; //Поле может быть null
     private Label label; //Поле может быть null
+    private String author;
 
 
     public MusicBand(
@@ -149,5 +151,12 @@ public class MusicBand implements Comparable, Serializable {
         this.label = label;
     }
 
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 }
 

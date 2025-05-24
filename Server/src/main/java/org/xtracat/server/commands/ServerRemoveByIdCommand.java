@@ -2,7 +2,7 @@ package org.xtracat.server.commands;
 
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
-import org.xtracat.server.CollectionManager;
+import org.xtracat.CollectionManager;
 
 public class ServerRemoveByIdCommand implements ServerCommand {
     private final CollectionManager cm;
@@ -14,12 +14,11 @@ public class ServerRemoveByIdCommand implements ServerCommand {
     @Override
     public Response execute(Request request) {
         try {
-            String content = (String) request.getContent();
-            long id = Long.parseLong(content.trim());
+            long id =(long) request.getContent();
             if (cm.findById(id) == -1) {
                 return new Response("Ошибка: элемент с id " + id + " не существует");
             }
-            int callback = cm.removeById(id);
+            int callback = cm.removeById(id,request.getUser().login());
             if (callback == 0) {
                 return new Response("Элемент успешно удален");
             } else {

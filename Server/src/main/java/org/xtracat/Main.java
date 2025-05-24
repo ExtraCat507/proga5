@@ -4,7 +4,6 @@ import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
 import org.xtracat.dao.DatabaseManager;
 import org.xtracat.dao.SingletonDAO;
-import org.xtracat.server.CollectionManager;
 import org.xtracat.server.commands.*;
 import org.slf4j.Logger;
 import org.xtracat.logger.SingletonLogger;
@@ -46,8 +45,8 @@ public class Main {
         Properties info = getDBPassword();
 
         DatabaseManager dao = SingletonDAO.getDao(dbUrl,info);
-        CollectionManager cm = new CollectionManager(filename);
-        CommandHandler commandHandler = new CommandHandler(filename, cm);
+        CollectionManager cm = new CollectionManager();
+        CommandHandler commandHandler = new CommandHandler(cm);
         ChannelManager channelManager = new ChannelManager();
 
         try {
@@ -82,7 +81,7 @@ public class Main {
                     if (!key.isValid())
                         continue;
                     if (key.isReadable() && "console".equals(key.attachment())) {
-                        handleConsoleInput((Pipe.SourceChannel) key.channel(), filename, cm);
+                        handleConsoleInput((Pipe.SourceChannel) key.channel(), cm);
                         continue;
                     }
 
@@ -122,7 +121,7 @@ public class Main {
         } catch (BindException e) {
             logger.error("Port {} is busy", port, e);
         } catch (NoSuchElementException e) {
-            ServerSaveCommand svc = new ServerSaveCommand(filename, cm);
+            ServerSaveCommand svc = new ServerSaveCommand(cm);
             svc.execute(new Request(null, null));
             logger.info("Exiting");
             System.exit(0);
@@ -131,7 +130,7 @@ public class Main {
         }
     }
 
-    private static void handleConsoleInput(Pipe.SourceChannel consoleSource, String filename, CollectionManager cm) {
+    private static void handleConsoleInput(Pipe.SourceChannel consoleSource, CollectionManager cm) {
         ByteBuffer buffer = ByteBuffer.allocate(256);
         try {
             int bytesRead = consoleSource.read(buffer);
@@ -144,13 +143,13 @@ public class Main {
                 switch (command.toLowerCase()) {
                     case "exit":
                         logger.info("Exiting server per console command");
-                        ServerSaveCommand exitCommand = new ServerSaveCommand(filename, cm);
+                        ServerSaveCommand exitCommand = new ServerSaveCommand(cm);
                         exitCommand.execute(new Request("exit", null));
                         System.exit(0);
                         break;
                     case "save":
                         logger.info("Saving server state per console command");
-                        ServerSaveCommand saveCommand = new ServerSaveCommand(filename, cm);
+                        ServerSaveCommand saveCommand = new ServerSaveCommand(cm);
                         saveCommand.execute(new Request("save", null));
                         break;
                     default:
