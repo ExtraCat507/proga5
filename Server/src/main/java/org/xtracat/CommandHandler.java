@@ -16,9 +16,9 @@ public class CommandHandler {
     public CommandHandler(CollectionManager cm){
         commands.put("add", new ServerAddCommand(cm));
         commands.put("clear", new ServerClearCommand(cm));
-        commands.put("count_greater_than_number_of_participants", new ServerCountGreaterThanNumberOfParticipants(cm));
-        commands.put("print_ascending_num_of_participants", new ServerPrintAscendingListNumOfParticipants(cm));
-        commands.put("filter_greater_than_label", new ServerFilterGreaterThanLabel(cm));
+        commands.put("countGreaterThanNumberOfParticipants", new ServerCountGreaterThanNumberOfParticipants(cm));
+        commands.put("printFieldAscendingNumberOfParticipants", new ServerPrintAscendingListNumOfParticipants(cm));
+        commands.put("filterGreaterThanLabel", new ServerFilterGreaterThanLabel(cm));
         commands.put("info", new ServerInfoCommand(cm));
         commands.put("remove_by_id", new ServerRemoveByIdCommand(cm));
         commands.put("remove_at_index", new ServerRemoveByIndexCommand(cm));
@@ -37,8 +37,8 @@ public class CommandHandler {
     }
 
     public Response getResponse(Request request) {
-        logger.info("Got new task on backend: {}", request);
         ServerCommand command = this.get(request.getCommand());
+        logger.info("Got new task on backend: {}", request);
         if (command == null) {
             logger.error("Unknown command in request: {}", request);
             return null;

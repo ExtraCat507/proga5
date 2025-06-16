@@ -2,8 +2,6 @@ package org.xtracat.storage;
 
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import org.xtracat.datatypes.Label;
 import org.xtracat.datatypes.MusicGenre;
 
 import java.io.IOException;
@@ -58,7 +56,7 @@ public class CustomProblemHandler extends DeserializationProblemHandler {
 //                    return (int)1000;
 //                }
                 if(targetType == MusicGenre.class){
-                    return MusicGenre.INVALID;
+                    return null;
                 }
                 return null;
             }

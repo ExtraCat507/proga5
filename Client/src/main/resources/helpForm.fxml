@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.control.Button?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="252.0" prefWidth="461.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.xtracat.UI.helpForm.HelpWindowController">
+   <children>
+      <TextArea fx:id="helpField" editable="false" layoutX="20.0" layoutY="52.0" prefHeight="180.0" prefWidth="420.0" />
+      <Label fx:id="helpLabel" alignment="CENTER" layoutX="95.0" layoutY="14.0" prefHeight="18.0" prefWidth="270.0" text="Окно помощи" />
+      <Button fx:id="exitButton" alignment="TOP_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#exitAction" text="Выйти" />
+   </children>
+</AnchorPane>

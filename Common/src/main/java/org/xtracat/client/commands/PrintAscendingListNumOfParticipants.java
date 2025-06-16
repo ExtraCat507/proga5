@@ -30,13 +30,13 @@ public class PrintAscendingListNumOfParticipants implements Command {
             return;
         }
 
-        Object data = response.getData();
-        if (data instanceof Long[]) {
-            Long[] numbers = (Long[]) data;
+        Object data = response.getData( );
+        if (data instanceof long[]) {
+            long[] numbers = (long[]) data;
             if (numbers.length == 0) {
                 System.out.println("Коллекция пуста.");
             } else {
-                System.out.println("Значения количества участников в порядке возрастания:");
+                System.out.println(response.getMessage());
                 for (Long num : numbers) {
                     System.out.print(num + " ");
                 }

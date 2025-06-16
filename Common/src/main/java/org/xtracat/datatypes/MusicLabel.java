@@ -2,13 +2,13 @@ package org.xtracat.datatypes;
 
 import java.io.Serializable;
 
-public class Label implements Comparable, Serializable {
+public class MusicLabel implements Comparable, Serializable {
     private Long bands;
     private Double sales; //Значение поля должно быть больше 0
 
-    public Label(){}
+    public MusicLabel(){}
 
-    public Label(Long bands, Double sales) {
+    public MusicLabel(Long bands, Double sales) {
         this.bands = bands;
         this.sales = sales;
     }
@@ -31,13 +31,13 @@ public class Label implements Comparable, Serializable {
 
     @Override
     public int compareTo(Object o) { //  сортировка пр кол-ву банд
-        if (o.getClass() != Label.class) {
+        if (o.getClass() != MusicLabel.class) {
             throw new ClassCastException();
         }
 
-        if (this.getBands() > ((Label) o).getBands()) {
+        if (this.getBands() > ((MusicLabel) o).getBands()) {
             return 1;
-        } else if (this.getBands() < ((Label) o).getBands()) {
+        } else if (this.getBands() < ((MusicLabel) o).getBands()) {
             return -1;
         } else {
             //if(this.name < ((MusicBand) o).name)

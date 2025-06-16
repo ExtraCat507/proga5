@@ -7,6 +7,5 @@ public enum MusicGenre implements Serializable {
     RAP,
     POP,
     PUNK_ROCK,
-    BRIT_POP,
-    INVALID
+    BRIT_POP
 }

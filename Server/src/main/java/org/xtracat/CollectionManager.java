@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.xtracat.dao.DatabaseManager;
 import org.xtracat.dao.SingletonDAO;
 import org.xtracat.datatypes.BandsCollection;
-import org.xtracat.datatypes.Label;
+import org.xtracat.datatypes.MusicLabel;
 import org.xtracat.datatypes.MusicBand;
 import org.xtracat.logger.SingletonLogger;
 import org.xtracat.usershit.User;
@@ -128,11 +128,11 @@ public class CollectionManager { // Receiver (исполнитель)
     }
 
 
-    public ArrayList<MusicBand> filterGreaterThanLabel(Label label) {
+    public ArrayList<MusicBand> filterGreaterThanLabel(MusicLabel musicLabel) {
         ArrayList<MusicBand> result = new ArrayList<>(this.bandsCollection.getNumOfElements());
         for (MusicBand band : this.getList()) {
             if (band.getLabel() == null) continue;
-            if (band.getLabel().compareTo(label) == 1) {
+            if (band.getLabel().compareTo(musicLabel) == 1) {
                 result.add(band);
             }
         }

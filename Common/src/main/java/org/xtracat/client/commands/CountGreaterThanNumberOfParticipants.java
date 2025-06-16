@@ -54,6 +54,6 @@ public class CountGreaterThanNumberOfParticipants implements Command {
 
     @Override
     public String descr() {
-        return "countGreaterThanNumberOfParticipants num - возвращает число элементов, где NumberOfParticipants больше заданного";
+            return "countGreaterThanNumberOfParticipants num - возвращает число элементов, где NumberOfParticipants больше заданного";
     }
 }

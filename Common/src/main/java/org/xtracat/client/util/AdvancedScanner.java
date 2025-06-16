@@ -1,7 +1,7 @@
 package org.xtracat.client.util;
 
 import org.xtracat.datatypes.Coordinates;
-import org.xtracat.datatypes.Label;
+import org.xtracat.datatypes.MusicLabel;
 import org.xtracat.datatypes.MusicBand;
 import org.xtracat.datatypes.MusicGenre;
 import org.xtracat.server.CoordinatesBuilder;
@@ -120,9 +120,9 @@ public class AdvancedScanner {
         Long numberOfParticipants = enterLong("Введите количество участников:", 1);
         Integer singlesCount = enterInteger("Введите количество синглов:", 1);
         MusicGenre genre = enterMusicGenre();
-        Label label = enterLabel();
+        MusicLabel musicLabel = enterLabel();
         MusicBandBuilder builder = new MusicBandBuilder();
-        return builder.build(name, coordinates, ZonedDateTime.now() ,numberOfParticipants, singlesCount, genre, label);
+        return builder.build(name, coordinates, ZonedDateTime.now() ,numberOfParticipants, singlesCount, genre, musicLabel);
     }
 
     public MusicBand createMusicBandInScript() {
@@ -132,9 +132,9 @@ public class AdvancedScanner {
             Long numberOfParticipants = sc.nextLong();
             Integer singlesCount = sc.nextInt();
             MusicGenre genre = enterMusicGenreInScript();
-            Label label = enterLabelInScript();
+            MusicLabel musicLabel = enterLabelInScript();
             MusicBandBuilder builder = new MusicBandBuilder();
-            return builder.build(name, coordinates,ZonedDateTime.now() , numberOfParticipants, singlesCount, genre, label);
+            return builder.build(name, coordinates,ZonedDateTime.now() , numberOfParticipants, singlesCount, genre, musicLabel);
         } catch (IllegalArgumentException e) {
             System.out.println("Неверные данные при вводе MusicBand(или одного из полей)");
             throw new IllegalArgumentException();
@@ -158,7 +158,7 @@ public class AdvancedScanner {
 
     }
 
-    public Label enterLabelInScript() {
+    public MusicLabel enterLabelInScript() {
         try {
             long bands = sc.nextLong();
             double sales = sc.nextDouble();
@@ -188,12 +188,12 @@ public class AdvancedScanner {
         return new Coordinates(x, y);
     }
 
-    public Label enterLabel() {
+    public MusicLabel enterLabel() {
         System.out.println("Введите данные о лейбле (оставьте пустым для null):");
         try {
             long bands = enterLong("Введите количество групп на лейбле:", 0, true);
             double sales = enterDouble("Введите объем продаж (должно быть больше 0):", 0, true);
-            return new Label(bands, sales);
+            return new MusicLabel(bands, sales);
         } catch (NullPointerException e) {
             return null;
         }
@@ -202,7 +202,7 @@ public class AdvancedScanner {
     public MusicGenre enterMusicGenre() {
         System.out.println("Выберите жанр (оставьте пустым для null):");
         for (MusicGenre genre : MusicGenre.values()) {
-            if (genre == MusicGenre.INVALID) continue;
+            if (genre.name().equals("INVALID")) continue;
             System.out.println(genre);
         }
         while (true) {

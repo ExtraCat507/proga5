@@ -12,11 +12,11 @@ public class Response implements Serializable {
     }
 
     public Response(String message){
-        new Response(message,null);
+        this(message,null);
     }
 
     public Response(){
-        new Response("Пустой ответ от сервера",null);
+        this("Пустой ответ от сервера",null);
     }
 
     public String getMessage(){

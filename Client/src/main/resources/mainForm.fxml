@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<?import javafx.scene.control.ComboBox?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.xtracat.UI.mainForm.MainFormWindowController">
+   <center>
+      <TableView fx:id="table" prefHeight="531.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="75.0" text="id" fx:id="idColumn"/>
+          <TableColumn prefWidth="75.0" text="name" fx:id="nameColumn" />
+            <TableColumn prefWidth="75.0" text="X" fx:id="xColumn" />
+            <TableColumn prefWidth="75.0" text="Y" fx:id="yColumn" />
+            <TableColumn prefWidth="115.99993896484375" text="Creation Date" fx:id="creationDateColumn" />
+            <TableColumn prefWidth="83.199951171875" text="Singles" fx:id="singlesColumn" />
+            <TableColumn prefWidth="90.4000244140625" text="Participants" fx:id="participantsColumn" />
+            <TableColumn prefWidth="100.0" text="Genre" fx:id="genreColumn" />
+            <TableColumn prefWidth="99.20001220703125" text="Label bands" fx:id="labelBandsColumn" />
+            <TableColumn prefWidth="86.4000244140625" text="Label sales" fx:id="labelSalesColumn" />
+            <TableColumn prefWidth="112.00006103515625" text="Owner" fx:id="ownerColumn" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </center>
+   <bottom>
+      <GridPane alignment="TOP_RIGHT" prefHeight="90.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="451.3999786376953" minWidth="10.0" prefWidth="439.3999786376953" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="711.1999755859375" minWidth="10.0" prefWidth="436.80002136230473" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="502.4000244140624" minWidth="10.0" prefWidth="257.60002441406255" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#addAction" prefWidth="100.0" text="Добавить" />
+                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#editAction" prefWidth="100.0" text="Редактировать" />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteAction" prefWidth="100.0" text="Удалить" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+               <children>
+                  <Button fx:id="helpButton" alignment="CENTER" mnemonicParsing="false" onAction="#helpAction" prefWidth="210.0" text="Помощь" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.rowIndex="1">
+               <children>
+                  <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearAction" prefWidth="100.0" text="Очистить" />
+                  <Button fx:id="executeScriptButton" mnemonicParsing="false" onAction="#executeScriptAction" prefHeight="26.0" prefWidth="138.0" text="Выполнить из файла" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <Button fx:id="visualizationButton" mnemonicParsing="false" onAction="#visualizationAction" prefHeight="26.0" prefWidth="210.0" text="Визуализация" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Button fx:id="printFieldAscendingNumberOfParticipants" mnemonicParsing="false" onAction="#printAscendingListAction" prefHeight="26.0" prefWidth="210.0" text="Вывести список кол-ва участников" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <Button fx:id="countGreaterThanNumberOfParticipantsButton" mnemonicParsing="false" onAction="#countGreaterAction" prefHeight="26.0" prefWidth="210.0" text="Счёт больше кол-ва участников" />
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+   </bottom>
+   <top>
+      <GridPane prefHeight="80.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="538.3999633789062" minWidth="10.0" prefWidth="91.79997863769529" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="783.8000091552734" minWidth="10.0" prefWidth="547.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="742.3999694824217" minWidth="10.0" prefWidth="573.4000000000001" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="50.799993896484374" minHeight="10.0" prefHeight="50.799993896484374" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="35.599996948242186" minHeight="10.0" prefHeight="30.000006103515624" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="360.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="9.0" prefHeight="34.0" prefWidth="242.0" spacing="2.0" GridPane.columnIndex="2">
+               <children>
+                  <Label fx:id="languageLabel" prefHeight="18.0" prefWidth="44.0" text="Язык:" />
+                   <ComboBox fx:id="langBox" layoutX="312.0" layoutY="286.0" onAction="#localeChanged" prefHeight="25.0" prefWidth="91.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1">
+               <children>
+                  <Label fx:id="userLabel" prefHeight="28.0" prefWidth="128.0" text="Пользователь:">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="userField" prefHeight="31.0" prefWidth="118.0" text="*user*" />
+               </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Label fx:id="dateLabel" prefHeight="18.0" prefWidth="175.0" text="Дата создания коллекции:" />
+                  <Label fx:id="dateField" prefHeight="18.0" prefWidth="400.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="exitButton" alignment="TOP_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#exitAction" text="Выйти" />
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+   </top>
+</BorderPane>

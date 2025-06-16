@@ -15,7 +15,9 @@ public class ServerInfoCommand implements ServerCommand {
     public Response execute(Request request) {
         try {
             String info = cm.getBandsCollection().toString();
-            return new Response("Информация о коллекции:\n" + info);
+            info = cm.getBandsCollection().getInitializationDate().toString();
+            //return new Response("Информация о коллекции:\n" + info);
+            return new Response(info,cm.getBandsCollection().getInitializationDate());
         } catch (Exception e) {
             return new Response("Ошибка при получении информации о коллекции: " + e.getMessage());
         }

@@ -1,5 +1,6 @@
 plugins {
-    id("java")
+    application
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 group = "org.xtracat"
@@ -9,39 +10,43 @@ repositories {
     mavenCentral()
 }
 
+javafx {
+    version = "17.0.10"
+    modules = listOf("javafx.controls", "javafx.fxml")
+}
+
 dependencies {
+    implementation(project(":Common"))
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    implementation(project(":Common"))
+}
 
+application {
+    mainClass.set("org.xtracat.UI.AppStarter")
+}
+
+tasks.withType<ProcessResources> {
+    filteringCharset = "UTF-8"
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 
-val jar by tasks.getting(Jar::class) {
-    manifest {
-        attributes["Main-Class"] = "org.xtracat.Main"
-    }
-
-    from(configurations.runtimeClasspath
-        // .get() // uncomment this on Gradle 6+
-        // .files
-        .get()
-        .map { if (it.isDirectory) it else zipTree(it) })
-}
+// 4. Configure the final JAR assembly
 tasks.withType<Jar> {
+
+    manifest {
+        attributes["Main-Class"] = application.mainClass.get()
+    }
+
+    // Add the converted i18n files from our task's output directory
+    from(layout.buildDirectory.dir("resources-n2a/i18n"))
+
+    // Unpack all dependency JARs as before
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-tasks.named<Javadoc>("javadoc") {
-    source = fileTree("src/main/java") {
-        include("**/*.java")
-    }
-    classpath = files(sourceSets.main.get().compileClasspath)
-
-    options {
-        encoding = "UTF-8"
-    }
 }

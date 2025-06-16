@@ -1,7 +1,7 @@
 package org.xtracat.client.commands;
 
 import org.xtracat.client.util.*;
-import org.xtracat.datatypes.Label;
+import org.xtracat.datatypes.MusicLabel;
 import org.xtracat.datatypes.MusicBand;
 import org.xtracat.usershit.User;
 
@@ -12,7 +12,7 @@ public class FilterGreaterThanLabel implements Command {
 
     private final MyDispatcher dispatcher;
     private final List<Scanner> scannerStack;
-    private Label comparedLabel;
+    private MusicLabel comparedMusicLabel;
     private int mode;
 
     public FilterGreaterThanLabel(MyDispatcher dispatcher, List<Scanner> scannerStack) {
@@ -24,18 +24,18 @@ public class FilterGreaterThanLabel implements Command {
     public void prepare() {
         AdvancedScanner advSc = new AdvancedScanner(scannerStack.get(scannerStack.size() - 1));
         if (mode == 1) {
-            comparedLabel = advSc.enterLabelInScript();
+            comparedMusicLabel = advSc.enterLabelInScript();
         } else {
-            comparedLabel = advSc.enterLabel();
+            comparedMusicLabel = advSc.enterLabel();
         }
-        if (comparedLabel == null) {
+        if (comparedMusicLabel == null) {
             System.out.println("Не получится сравнить: введенный Label равен null");
         }
     }
 
     @Override
     public Request buildRequest() {
-        return new Request("filterGreaterThanLabel", comparedLabel);
+        return new Request("filterGreaterThanLabel", comparedMusicLabel);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class FilterGreaterThanLabel implements Command {
     public void execute(int mode, User user, String[] args) {
         this.mode = mode;
         prepare();
-        if (comparedLabel == null) {
+        if (comparedMusicLabel == null) {
             return;
         }
         Request request = buildRequest();

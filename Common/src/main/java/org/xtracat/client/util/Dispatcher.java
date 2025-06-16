@@ -41,7 +41,7 @@ public class Dispatcher implements MyDispatcher{
 
             if(tries>0){
                 System.out.println("Не удалось подключиться повторно. Выходим :(");
-                System.exit(0);
+                return new Response("Нет ответа от сервера.");
             }
             System.out.println("Ошибка при отправке запроса на сервер:");
             System.out.println("Повторная попытка через 5 секунд");

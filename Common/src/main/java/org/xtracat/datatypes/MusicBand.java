@@ -1,7 +1,6 @@
 package org.xtracat.datatypes;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
 import com.fasterxml.jackson.annotation.*;
@@ -17,7 +16,7 @@ public class MusicBand implements Comparable, Serializable {
     private Long numberOfParticipants; //Поле не может быть null, Значение поля должно быть больше 0
     private Integer singlesCount; //Поле не может быть null, Значение поля должно быть больше 0
     private MusicGenre genre; //Поле может быть null
-    private Label label; //Поле может быть null
+    private MusicLabel musicLabel; //Поле может быть null
     private String author;
 
 
@@ -28,14 +27,14 @@ public class MusicBand implements Comparable, Serializable {
             @JsonProperty("numberOfParticipants") Long numberOfParticipants,
             @JsonProperty("singlesCount") int singlesCount,
             @JsonProperty("genre") MusicGenre genre,
-            @JsonProperty("label") Label label) {
+            @JsonProperty("label") MusicLabel musicLabel) {
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = creationDate;
         this.numberOfParticipants = numberOfParticipants;
         this.singlesCount = singlesCount;
         this.genre = genre;
-        this.label = label;
+        this.musicLabel = musicLabel;
     }
 
 
@@ -65,10 +64,10 @@ public class MusicBand implements Comparable, Serializable {
 
     @Override
     public String toString() {
-        if (label == null) {
-            return "Music band: " + this.name + "\n" + "Кол-во участников: " + this.numberOfParticipants + "\n" + "Жанр: " + this.genre + "\n" + "Кол-во синглов: " + this.singlesCount + "\n" + "id: " + this.id +"\n"+ coordinates + "\n" + "Label: null" + "\n________________\n";
+        if (musicLabel == null) {
+            return "Music band: " + this.name + "\n" + "Кол-во участников: " + this.numberOfParticipants + "\n" + "Жанр: " + this.genre + "\n" + "Кол-во синглов: " + this.singlesCount + "\n" + "id: " + this.id +"\n"+ coordinates + "\n" + "Label: null" + "\n" + "Author: " + this.author + "\n________________\n";
         }
-        return "Music band: " + this.name + "\n" + "Кол-во участников: " + this.numberOfParticipants + "\n" + "Жанр: " + this.genre + "\n" + "Кол-во синглов: " + this.singlesCount + "\n" + "id: " + this.id + "\n" + coordinates  + "\n" + label + "\n________________\n";
+        return "Music band: " + this.name + "\n" + "Кол-во участников: " + this.numberOfParticipants + "\n" + "Жанр: " + this.genre + "\n" + "Кол-во синглов: " + this.singlesCount + "\n" + "id: " + this.id + "\n" + coordinates  + "\n" + musicLabel + "Author: " + this.author +  "\n________________\n";
     }
 
 
@@ -76,12 +75,12 @@ public class MusicBand implements Comparable, Serializable {
         if (name.isEmpty() || numberOfParticipants <= 0 || singlesCount <= 0 || creationDate == null) {
             throw new IllegalArgumentException();
         }
-        if(genre == MusicGenre.INVALID){
+        if(genre.name().equals("INVALID")){
             throw new IllegalArgumentException();
         }
         coordinates.validate();
-        if (label != null) {
-            label.validate();
+        if (musicLabel != null) {
+            musicLabel.validate();
         }
 
     }
@@ -143,12 +142,12 @@ public class MusicBand implements Comparable, Serializable {
         this.genre = genre;
     }
 
-    public Label getLabel() {
-        return label;
+    public MusicLabel getLabel() {
+        return musicLabel;
     }
 
-    public void setLabel(Label label) {
-        this.label = label;
+    public void setLabel(MusicLabel musicLabel) {
+        this.musicLabel = musicLabel;
     }
 
     public String getAuthor() {

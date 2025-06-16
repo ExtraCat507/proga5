@@ -14,10 +14,10 @@ public class ServerCountGreaterThanNumberOfParticipants implements ServerCommand
     @Override
     public Response execute(Request request) {
         try {
-            String arg = (String) request.getContent();
-            int number = Integer.parseInt(arg);
+            int number = (int) request.getContent();
             int result = (int) cm.getList().stream().filter(s -> s.getNumberOfParticipants() > number).count();
-            return new Response("Количество элементов с числом участников больше " + number + ": " + result);
+            Response response = new Response("Количество элементов с числом участников больше " + number + ": " + result);
+            return response;
         } catch (NumberFormatException e) {
             return new Response("Ошибка: аргумент должен быть целым числом");
         } catch (ArrayIndexOutOfBoundsException e) {

@@ -2,7 +2,7 @@ package org.xtracat.server.commands;
 
 import org.xtracat.client.util.Request;
 import org.xtracat.client.util.Response;
-import org.xtracat.datatypes.Label;
+import org.xtracat.datatypes.MusicLabel;
 import org.xtracat.datatypes.MusicBand;
 import org.xtracat.CollectionManager;
 
@@ -19,11 +19,11 @@ public class ServerFilterGreaterThanLabel implements ServerCommand {
     public Response execute(Request request) {
         try {
             // Ожидается, что в request.getContent() передан объект Label
-            Label comparedLabel = (Label) request.getContent();
-            if (comparedLabel == null) {
+            MusicLabel comparedMusicLabel = (MusicLabel) request.getContent();
+            if (comparedMusicLabel == null) {
                 return new Response("Ошибка: переданный Label равен null");
             }
-            ArrayList<MusicBand> result = (ArrayList<MusicBand>) cm.getList().stream().filter(s -> s.compareTo(comparedLabel) > 0);
+            ArrayList<MusicBand> result = (ArrayList<MusicBand>) cm.getList().stream().filter(s -> s.compareTo(comparedMusicLabel) > 0);
             return new Response("Найдено элементов с лейблом больше заданного: " + result.size(), result);
         } catch (ClassCastException e) {
             return new Response("Ошибка: неверный тип данных в запросе, ожидался Label");

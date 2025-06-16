@@ -7,14 +7,12 @@ import org.xtracat.server.CoordinatesBuilder;
 import org.xtracat.server.LabelBuilder;
 import org.xtracat.server.MusicBandBuilder;
 import org.xtracat.usershit.PasswordRecord;
-import org.xtracat.usershit.User;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Properties;
-import java.util.logging.Handler;
 
 public class DatabaseManager {
     private static final Logger logger = SingletonLogger.getLogger();
@@ -106,7 +104,7 @@ public class DatabaseManager {
                         "  genre = ?, " +
                         "  label_id = ?, " +
                         "  user_id = ?" +
-                        "WHERE id = ?";
+                        "   WHERE id = ?";
         String hmm = """
                 SELECT id
                 FROM app_user
@@ -150,9 +148,13 @@ public class DatabaseManager {
                 updateStmt.setNull(6, Types.BIGINT);
             }
             check.setString(1, band.getAuthor());
-            ResultSet rss = check.executeQuery();
-            updateStmt.setLong(7,rss.getLong(1));
-            updateStmt.setLong(8, band.getId());
+            try(ResultSet rss = check.executeQuery()) {
+                if (!rss.next()) {
+                    throw new SQLException("User with login=" + band.getAuthor() + " not found");
+                }
+                updateStmt.setLong(7, rss.getLong(1));
+                updateStmt.setLong(8, band.getId());
+            }
 
             int affected = updateStmt.executeUpdate();
             if (affected == 0) {
@@ -165,6 +167,7 @@ public class DatabaseManager {
             }
 
             conn.commit();
+            logger.info("On updating everything is okay");
             return true;
         } catch (SQLException ex) {
             conn.rollback();
@@ -204,9 +207,13 @@ public class DatabaseManager {
                 WHERE id = ?
                 """;
 
-        String sql = "DELETE FROM music_band" +
-                "JOIN app_user ON app_user.id = music_band.user_id" +
-                "WHERE id = ? AND login = ?";
+        String sql = """
+                DELETE FROM music_band
+                USING app_user
+                WHERE app_user.id = music_band.user_id
+                  AND music_band.id = ?\s
+                  AND app_user.login = ?
+                """;
         try (PreparedStatement ps = conn.prepareStatement(sql);
         PreparedStatement ps2 = conn.prepareStatement(sqll)) {
             ps.setString(2,user);
@@ -295,7 +302,7 @@ public class DatabaseManager {
         }
     }
 
-    private long insertLabel(Label l) throws SQLException {
+    private long insertLabel(MusicLabel l) throws SQLException {
         String sql = "INSERT INTO label(bands, sales) VALUES (?,?) RETURNING id";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, l.getBands());
@@ -355,13 +362,13 @@ public class DatabaseManager {
                     int y = rs.getInt("c_y");
                     Coordinates coords = new CoordinatesBuilder().build(x, y);
 
-                    // label (может быть null)
-                    Label label = null;
+                    // musicLabel (может быть null)
+                    MusicLabel musicLabel = null;
                     long lId = rs.getLong("l_id");
                     if (!rs.wasNull()) {
                         long lbands = rs.getLong("l_bands");
                         double lsales = rs.getDouble("l_sales");
-                        label = new LabelBuilder().build(lbands, lsales);
+                        musicLabel = new LabelBuilder().build(lbands, lsales);
                     }
 
                     String name = rs.getString("mb_name");
@@ -372,7 +379,7 @@ public class DatabaseManager {
                     MusicGenre genre = MusicGenre.valueOf(rs.getString("genre"));
 
                     MusicBand band = new MusicBandBuilder()
-                            .build(name, coords, creationDate, numPart, singles, genre, label);
+                            .build(name, coords, creationDate, numPart, singles, genre, musicLabel);
                     band.setId(bandId);
                     band.setAuthor(rs.getString("login"));
                     collection.getMusicBands().add(band);
